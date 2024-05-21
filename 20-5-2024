@@ -1,0 +1,23 @@
+1863. Sum of all Subsets XOR totals
+
+class Solution {
+    public int subsetXORSum(int[] nums) {
+        return subsets(nums,0,nums.length,new ArrayList<>());
+    }
+
+    private int subsets(int[] nums, int index, int n, List<Integer> list){
+        if(index >= n){
+            return list.get(0);
+        }
+
+        if(list.size() != 0) list.set(0,list.get(0)^nums[index]);
+        else list.add(nums[index]);
+
+        int left = subsets(nums,index+1, n, list);
+        
+        list.set(0,list.get(0)^nums[index]);
+        
+        int right = subsets(nums,index+1,n,list);
+        return right + left;
+    }
+}
