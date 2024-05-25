@@ -1,0 +1,37 @@
+140. Word Break 2
+
+class Solution {
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        Set<String> set = new HashSet<>(wordDict);
+        Set<String> resSet = new HashSet<String>(); 
+        wordB(s,0,set,new ArrayList<String>(),resSet);
+        
+        List<String> res = new ArrayList<>(resSet);
+        return res;
+    }
+
+    private void wordB(String s, int index, Set<String> set, List<String> list, Set<String> res){
+
+        if(index >= s.length()){
+            res.add(combine(list));
+            return;
+        }
+
+        for(int i = index+1;i<=s.length();i++){
+            if(set.contains(s.substring(index,i))){
+                list.add(s.substring(index,i));
+                wordB(s,i,set,list,res);
+                list.remove(list.size()-1);
+            }
+        }
+    }
+
+    private String combine(List<String> list){
+        String res = "";
+        for(String str : list){
+            if(res.equals("")) res = str + "";
+            else res += " " + str;
+        }
+        return res;
+    }
+}
