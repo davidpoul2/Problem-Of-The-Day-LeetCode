@@ -1,0 +1,38 @@
+2597. The Number of Beautiful Subsets
+
+class Solution {
+    public int beautifulSubsets(int[] nums, int k) {
+        Arrays.sort(nums);
+        return beautiful(nums,k,0,nums.length,new ArrayList<Integer>());
+    }
+
+    private int beautiful(int[] nums, int k , int index, int n, List<Integer> list){
+        if(index >= n){
+            if(subset(list,k) && list.size() != 0){
+                return 1;
+            }
+            return 0;
+        }
+
+        list.add(nums[index]);
+        int left = beautiful(nums,k,index+1, n, list);
+        list.remove(list.size()-1);
+        int right = beautiful(nums,k,index+1,n,list);
+        return left + right;
+    }
+
+    private boolean subset(List<Integer> list, int k){
+        int i = 1;
+        int j = 0;
+        while(i<list.size()){
+            int abs = Math.abs(list.get(i)-list.get(j));
+            while(abs > k && j < i){
+                j++;
+                abs = list.get(i)-list.get(j);
+            }
+            if(abs == k)   return false;
+            i++;
+        }
+        return true;
+    }
+}
