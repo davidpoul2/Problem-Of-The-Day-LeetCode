@@ -1,0 +1,31 @@
+1208.Get Equal Substring within the Budget.
+
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        int maxLen = 0;
+        int[] cost = new int[s.length()];
+
+        for(int i = 0;i<s.length();i++){
+            
+            int val = Math.abs(s.charAt(i)-t.charAt(i));
+            
+            cost[i] = val;
+            System.out.println(val);
+        }
+        int curCost = 0;
+        int Len = 0;
+        for(int i = 0,j=0;i<cost.length;i++){
+            
+            curCost += cost[i];
+            Len++;
+            while(curCost > maxCost && j <= i){
+                curCost -= cost[j++];
+                Len--;
+            }
+            
+            maxLen = Math.max(maxLen, Len);
+        }
+
+        return maxLen;
+    }
+}
