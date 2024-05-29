@@ -1,0 +1,35 @@
+1404. Number of Steps to Reduce a Number in Binary Representation to One.
+
+
+//Hint 1 : if the last character of binary number is 1 then it is odd, if it is '0' it is even.
+//Hint 2 : When we divide a binary representation of number with two then the last digit of Binary Number is removed.
+class Solution {
+    public int numSteps(String s) {
+        
+        int steps = 0;
+        while(!s.equals("1")){
+            //boolean isEven = false;
+        
+            if(s.charAt(s.length()-1) != '0'){
+                steps++;
+                boolean isZero = false;
+                for(int i = s.length()-1;i>=0;i--){
+                    if(s.charAt(i) == '0'){
+                        isZero = true;
+                        s = s.substring(0,i)+'1'+s.substring(i+1);
+                        break;
+                    }
+                    s = s.substring(0,i)+'0'+s.substring(i+1);
+                }
+                if(!isZero){
+                    s = '1' + s;
+                }
+                
+            }
+            s = s.substring(0,s.length()-1);
+            steps++;
+
+        }
+        return steps;
+    }
+}
