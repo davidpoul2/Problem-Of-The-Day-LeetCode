@@ -1,0 +1,20 @@
+1442. Count Triplets that can form Two Arrays of Equal XOR.
+
+class Solution {
+    public int countTriplets(int[] arr) {
+
+        int n = arr.length;
+        int first = 0;
+        int res = 0;
+        for(int i = 0;i<n-1;i++){
+            
+           first = arr[i];
+           for(int j = i+1;j<n;j++){
+                first ^= arr[j];
+                if(first == 0)  res += (j-i);
+           }
+        } 
+        
+        return res;
+    }
+}
