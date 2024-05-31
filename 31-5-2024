@@ -1,0 +1,24 @@
+260. Single Number 3
+
+class Solution {
+    public int[] singleNumber(int[] nums) {
+        int n = nums.length;
+        if(n == 2) return nums;
+
+        int res = 0;
+        for(int i = 0;i<n;i++)  res ^= nums[i];
+
+        int binaryOne = 0;
+        while(((res >> binaryOne)&1) != 1){
+            binaryOne++;
+        } 
+
+        int[] op = new int[2];
+        for(int i = 0;i<n;i++){
+            if(((nums[i]>>binaryOne)&1) == 1)    op[0] ^= nums[i];
+            else op[1] ^= nums[i];
+        }
+        
+        return op;
+    }
+}
