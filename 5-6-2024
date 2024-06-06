@@ -1,0 +1,32 @@
+1002  Find Common Characters.
+
+class Solution {
+    public List<String> commonChars(String[] words) {
+        HashMap<Character,Integer> res = new HashMap<>();
+        for(int i = 0;i<words[0].length();i++){
+            res.put(words[0].charAt(i), res.getOrDefault(words[0].charAt(i),0)+1);
+        }
+
+        for(int i =1;i<words.length;i++){
+            HashMap<Character,Integer> map = new HashMap<>();
+            for(int j = 0;j<words[i].length();j++){
+                map.put(words[i].charAt(j), map.getOrDefault(words[i].charAt(j),0)+1);
+            }
+            for(Map.Entry<Character,Integer> m : res.entrySet()){
+                if(map.containsKey(m.getKey())){
+                    res.put(m.getKey(),Math.min(m.getValue(),map.get(m.getKey())));
+                }
+                else res.put(m.getKey(),0);
+            }
+        }
+        List<String> list = new ArrayList<>();
+        for(Map.Entry<Character,Integer> m : res.entrySet()){
+            int value = m.getValue();
+            while( value > 0){
+                list.add(Character.toString(m.getKey()));
+                value--;
+            }
+        }
+        return list;
+    }
+}
