@@ -1,0 +1,44 @@
+648. Replace Words
+
+class Solution {
+    public String replaceWords(List<String> dic, String sentence) {
+        optimal approch
+        Set<String> dictionary = new HashSet<>(dic);
+        String ans = "";
+        boolean reached = false;
+        String word = "";
+        for(int i = 0;i<sentence.length();i++){
+            if(!reached && sentence.charAt(i) != ' '){
+                word += sentence.charAt(i);
+            }
+            if(dictionary.contains(word)){
+                reached = true;
+            }
+            if(sentence.charAt(i) == ' '){
+                ans += " " +word;
+                reached = false;
+                word = "";
+            }
+
+        }
+        return ans.substring(1,ans.length())+" " + word;
+
+        another approch brute force at first
+        /**String[] str = sentence.split(" ");
+        Set<String> dictionary = new HashSet<>(dic);
+        for(int i = 0;i<str.length;i++){
+            for(int j = 0;j<str[i].length();j++){
+                if(dictionary.contains(str[i].substring(0,j))){
+                    str[i] = str[i].substring(0,j);
+                    break;
+                }
+            }
+        }
+        sentence = "";
+        for(int i = 0;i<str.length;i++){
+            if(i != str.length-1) sentence += str[i] + " ";
+            else sentence += str[i];
+        }
+        return sentence;*/
+    }
+}
