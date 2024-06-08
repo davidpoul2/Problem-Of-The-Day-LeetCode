@@ -1,0 +1,24 @@
+523.  Continuous Subarray Sum
+
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int n = nums.length;
+        int[] prev = new int[n];
+        prev[0] = nums[0];
+        for(int i =1 ;i<n;i++){
+            prev[i] = prev[i-1]+nums[i];
+        }
+
+        HashMap<Integer,Integer> map = new HashMap<>();
+
+        map.put(0,-1);
+        for(int i = 0;i<n;i++){
+            int val = prev[i]%k;
+            if(map.containsKey(val)){
+                if(Math.abs(map.get(val)-i) >= 2) return true;
+            }
+            else    map.put(val,i);
+        }
+        return false;
+    }
+}
