@@ -1,0 +1,45 @@
+1122.  Relative Sort Array
+
+class Solution {
+    public int[] relativeSortArray(int[] arr1, int[] arr2) {
+        int n = arr1.length;
+        int m = arr2.length;
+
+        // step1: storing the distinct values in the map along with their repitition number.
+        HashMap<Integer,Integer> map1 = new HashMap<>();
+        for(int i =0 ;i<m;i++){
+            int count = 0;
+            for(int j = 0;j<n;j++){
+                if(arr2[i] == arr1[j])  count++;
+            }
+            map1.put(arr2[i],count);
+        }
+
+        // step2: Storing the elements which are not present in arr2 in sorted order to place them in end of the result.
+        TreeMap<Integer,Integer> map2  = new TreeMap<>();
+        for(int i = 0;i<n;i++){
+            if(!map1.containsKey(arr1[i]))  map2.put(arr1[i], map2.getOrDefault(arr1[i],0)+1);
+        }
+
+        // step3: Storing all the values in the array from map.
+        int j = 0;
+        for(int i = 0;i<m;i++){
+            if(map1.containsKey(arr2[i])){
+                int val = map1.get(arr2[i]);
+                while(val > 0){
+                    arr1[j++] = arr2[i];
+                    val--;
+                }
+            }
+        }
+
+        for(Map.Entry<Integer,Integer> map : map2.entrySet()){
+            int val = map.getValue();
+            while(val > 0){
+                arr1[j++] = map.getKey();
+                val--;
+            }
+        }
+        return arr1;
+    }
+}
