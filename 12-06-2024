@@ -1,0 +1,32 @@
+75.  Sort Colors
+
+class Solution {
+    public void sortColors(int[] nums) {
+        int n = nums.length;
+        int red = 0;
+        int white = 0;
+        int blue = 0;
+
+        // Counting the 0's 1's and 2's in the array
+        for(int i = 0;i<n;i++){
+            if(nums[i] == 0)    red++;
+            else if(nums[i] == 1)   white++;
+            else blue++;
+        }
+
+        // placing the 0,1,2 as per requirement.
+        int i = 0;
+        while(red > 0){
+            nums[i++] =  0;
+            red--;
+        }  
+        while(white > 0){
+            nums[i++] = 1;
+            white--;
+        }
+        while(blue > 0){
+            nums[i++] = 2;
+            blue--;
+        }
+    }
+}
