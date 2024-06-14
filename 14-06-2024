@@ -1,0 +1,24 @@
+945.  Minimum Increment to Make Array Unique.
+
+class Solution {
+    public int minIncrementForUnique(int[] nums) {
+        
+        int n = nums.length;
+
+        Arrays.sort(nums);
+        int prev = nums[0];
+        int count = 0;
+
+        for(int i = 1 ;i< n;i++){
+
+            if(prev >= nums[i]){
+                int diff = (prev-nums[i])+1;
+                count += diff;
+                prev = nums[i]  + diff;
+            }
+            else prev = nums[i];
+        }
+
+        return count;
+    }
+}
