@@ -1,0 +1,45 @@
+2058.  Find the Minimum and Maximum Number of Nodes Between Critical Points
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public int[] nodesBetweenCriticalPoints(ListNode head) {
+        ListNode prev = head;
+        ListNode curr = head.next;
+        ListNode post = curr.next;
+
+        int i = 2;
+
+        List<Integer> list = new ArrayList<>();
+        while(post != null){
+            if(prev.val > curr.val && curr.val < post.val){
+                list.add(i);
+            }
+            else if(prev.val < curr.val && curr.val > post.val){
+                list.add(i);
+            }
+            i++;
+            prev = curr;
+            curr = post;
+            post = post.next;
+        }
+
+        Collections.sort(list);
+        int min = Integer.MAX_VALUE;
+        int max = -1;
+        for(int j = 1;j<list.size();j++){
+            min = Math.min(min, list.get(j)-list.get(j-1));
+        }
+        min = (min == Integer.MAX_VALUE)?-1:min;
+        if(list.size() > 1) max = list.get(list.size()-1)-list.get(0);
+        return new int[]{min,max};
+    }
+}
