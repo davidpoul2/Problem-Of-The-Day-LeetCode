@@ -1,0 +1,15 @@
+2582.  Pass the Pillow.
+
+class Solution {
+    public int passThePillow(int n, int time) {
+        int rotations = time/(n-1);
+        if(rotations%2 == 0){
+            return (time%(n-1))+1;
+        }
+        else{
+            int pos = (time%(n-1))+1;
+            int diff = n-pos;
+            return diff+1;
+        }
+    }
+}
