@@ -1,0 +1,24 @@
+1701.  Average Waiting Time
+
+class Solution {
+    public double averageWaitingTime(int[][] customers) {
+        
+        int n = customers.length;
+
+        double sum = 0;
+        int count = 0;
+        int prev = customers[0][0];
+        for(int i = 0;i< n;i++){
+            int time  = prev + customers[i][1];
+            int avgt = time - customers[i][0];
+            if(avgt < 0 || prev < customers[i][0]){
+                time = customers[i][1] + customers[i][0];
+                avgt = customers[i][1];
+            }
+            sum += avgt;
+            count++;
+            prev = time;
+        }
+        return sum/count;
+    }
+}
