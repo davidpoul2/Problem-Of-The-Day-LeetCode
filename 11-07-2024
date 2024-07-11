@@ -1,0 +1,26 @@
+1190.  Reverse Substrings Between each Pair of Paranthesis.
+
+class Solution {
+    public String reverseParentheses(String s) {
+        
+        Stack<Character> stack = new Stack<>();
+        List<Character> list = new ArrayList<>();
+
+        int n = s.length();
+
+        for(int i = 0;i<n;i++){
+            while(s.charAt(i) == ')'){
+                char ch = stack.pop();
+                if(ch != '('){
+                    list.add(ch);
+                }else{
+                    stack.addAll(list);
+                    list.clear();
+                    break;
+                }
+            }
+            if(s.charAt(i) != ')')  stack.add(s.charAt(i));
+        }
+        return stack.stream().map(str -> str.toString()).collect(Collectors.joining(""));
+    }
+}
