@@ -15,6 +15,7 @@
  *     }
  * }
  */
+/*
 class Solution {
     public TreeNode createBinaryTree(int[][] descriptions) {
         HashMap<Integer, TreeNode> map = new HashMap<>();
@@ -67,6 +68,61 @@ class Solution {
                 }
                 map.put(node, root);
             }
+        }
+
+        for(int i = 0;i<n;i++){
+            int node = descriptions[i][0];
+
+            if(!set.contains(node)) return map.get(node);
+        }
+        return null;
+    }
+}
+*/
+
+//Efficient Approch:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode createBinaryTree(int[][] descriptions) {
+        HashMap<Integer, TreeNode> map = new HashMap<>();
+        Set<Integer> set = new HashSet<>();
+
+        int n = descriptions.lengath;
+        for(int i = 0;i < n;i++){
+            int node = descriptions[i][0];
+            int child = descriptions[i][1];
+            int side = descriptions[i][2];
+
+            set.add(child);
+
+            if(!map.containsKey(node)){
+                map.put(node, new TreeNode(node));
+            }
+            if(!map.containsKey(child)){
+                map.put(child, new TreeNode(child));
+            }
+
+            if(side == 1){
+                map.get(node).left = map.get(child);
+            }
+            else{
+                map.get(node).right = map.get(child);
+            }
+           
         }
 
         for(int i = 0;i<n;i++){
