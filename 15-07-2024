@@ -1,0 +1,79 @@
+2196.  Create Binary Tree From Descriptions.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode createBinaryTree(int[][] descriptions) {
+        HashMap<Integer, TreeNode> map = new HashMap<>();
+        Set<Integer> set = new HashSet<>();
+
+        int n = descriptions.length;
+        for(int i = 0;i < n;i++){
+            int node = descriptions[i][0];
+            int child = descriptions[i][1];
+            int side = descriptions[i][2];
+
+            set.add(child);
+
+            // TreeNode root = null;
+            // TreeNode left = null;
+            // TreeNode right = null;
+            if(map.containsKey(node)){
+                if(side == 1){
+                    TreeNode root = map.get(node);
+                    TreeNode left = null;
+                    if(map.containsKey(child))   left = map.get(child);
+                    else left = new TreeNode(child);
+                    root.left = left;
+                    map.put(child, left);
+                }
+                else{
+                    TreeNode root = map.get(node);
+                    TreeNode right = null;
+                    if(map.containsKey(child))  right = map.get(child);
+                    else right = new TreeNode(child);
+                    root.right = right;
+                    map.put(child, right);
+                }
+            }
+            else{
+                TreeNode root = new TreeNode(node);
+                if(side == 1){
+                    TreeNode left = null;
+                    if(map.containsKey(child))   left = map.get(child);
+                    else left = new TreeNode(child);
+                    root.left = left;
+                    map.put(child, left);
+                }
+                else{
+                    TreeNode right = null;
+                    if(map.containsKey(child))  right = map.get(child);
+                    else right = new TreeNode(child);
+                    root.right = right;
+                    map.put(child, right);
+                }
+                map.put(node, root);
+            }
+        }
+
+        for(int i = 0;i<n;i++){
+            int node = descriptions[i][0];
+
+            if(!set.contains(node)) return map.get(node);
+        }
+        return null;
+    }
+}
