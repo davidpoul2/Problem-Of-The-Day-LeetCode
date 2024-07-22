@@ -1,0 +1,25 @@
+2418.  Sort the People 
+
+class Solution {
+    public String[] sortPeople(String[] names, int[] heights) {
+        
+        int n = names.length;
+        for(int i = 0;i<n;i++){
+            int index = i;
+            for(int j = i+1;j<n;j++){
+                if(heights[j] > heights[index]){
+                    index = j;
+                }
+            }
+            String temp = names[index];
+            names[index] = names[i];
+            names[i] = temp;
+
+            int t = heights[index];
+            heights[index] = heights[i];
+            heights[i] = t;
+        }
+
+        return names;
+    }
+}
