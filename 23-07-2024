@@ -1,0 +1,69 @@
+1636.  Sort Array by Increasing Frequency.
+
+/*
+class Solution {
+    public int[] frequencySort(int[] nums) {
+
+        Map<Integer,Integer> map = new HashMap<>();
+
+        for(int i : nums){
+            map.put(i, map.getOrDefault(i,0)+1);
+        }
+
+        List<Map.Entry<Integer, Integer>> list = new ArrayList<>();
+        list.addAll(map.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>(){
+            public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2){
+                if(o1.getValue() == o2.getValue()){
+                    return o2.getKey()-o1.getKey();
+                }
+                return o1.getValue()-o2.getValue();
+            }
+        });
+
+        int k = 0;
+        for(int i = 0;i<list.size();i++){
+            Map.Entry<Integer, Integer> n = list.get(i);
+            for(int j = 0;j<n.getValue();j++,k++){
+                nums[k] = n.getKey();
+            }
+        }
+
+        return nums;
+    }
+}
+*/
+
+// Lamda Expression
+class Solution {
+    public int[] frequencySort(int[] nums) {
+
+        Map<Integer,Integer> map = new HashMap<>();
+
+        for(int i : nums){
+            map.put(i, map.getOrDefault(i,0)+1);
+        }
+
+        List<Map.Entry<Integer, Integer>> list = new ArrayList<>();
+        list.addAll(map.entrySet());
+
+        Collections.sort(list, (o1,o2) -> {
+                if(o1.getValue() == o2.getValue()){
+                    return o2.getKey()-o1.getKey();
+                }
+                return o1.getValue()-o2.getValue();
+            }
+        );
+
+        int k = 0;
+        for(int i = 0;i<list.size();i++){
+            Map.Entry<Integer, Integer> n = list.get(i);
+            for(int j = 0;j<n.getValue();j++,k++){
+                nums[k] = n.getKey();
+            }
+        }
+
+        return nums;
+    }
+}
