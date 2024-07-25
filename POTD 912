@@ -1,0 +1,40 @@
+912.  Sort an Array.
+
+class Solution {
+    public int[] sortArray(int[] nums) {
+        merge(0,nums.length-1,nums);
+        return nums;
+    }
+
+    private void merge(int start, int end, int[] nums){
+        if(start >= end)    return;
+        int mid = (start+end)/2;
+        merge(start, mid, nums);
+        merge(mid+1, end, nums);
+        sort(start, mid, end, nums);
+    }
+
+    private void sort(int start, int mid, int end, int[] nums){
+        int s = start;
+        int m = mid+1;
+        int temp[] = new int[(end-start)+1];
+
+        int i = 0;
+        while(s <= mid && m <= end){
+            if(nums[s] < nums[m])   temp[i++] = nums[s++];
+            else temp[i++] = nums[m++];
+        }
+
+        while(s <= mid){
+            temp[i++] = nums[s++];
+        }
+
+        while(m <= end){
+            temp[i++] = nums[m++];
+        }
+
+        for(int j = start,k=0;j<=end;j++,k++){
+            nums[j] = temp[k];
+        }
+    }
+}
