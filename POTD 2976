@@ -1,0 +1,81 @@
+2976. Minimum Cost to Convert String l
+
+class Pair{
+    char dest;
+    int cost;
+    public Pair(char dest, int cost){
+        this.dest = dest;
+        this.cost = cost;
+    }
+}
+
+
+class Solution {
+
+    private HashMap<Character, Integer> dijkstra(char ch, Map<Character, ArrayList<Pair>> map){
+
+        HashMap<Character, Integer> min_cost_map = new HashMap<>();
+
+        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x,y) -> x.dest-y.dest);
+
+        pq.add(new Pair(ch, 0));
+
+        while(!pq.isEmpty()){
+            char node = pq.peek().dest;
+            int cost = pq.peek().cost;
+            pq.remove();
+
+            if(map.get(node) != null)
+            for(int i = 0;i<map.get(node).size();i++){
+                char neigh = map.get(node).get(i).dest;
+                int neighCost = map.get(node).get(i).cost;
+
+                if(min_cost_map.containsKey(neigh)) {
+                    if(min_cost_map.get(neigh) > cost + neighCost){
+                        min_cost_map.put(neigh, cost+ neighCost);
+                        pq.add(new Pair(neigh, min_cost_map.get(neigh)));
+                    }
+                }
+                else{
+                    min_cost_map.put(neigh, cost+ neighCost);
+                    pq.add(new Pair(neigh, min_cost_map.get(neigh)));
+                } 
+            }
+        }
+        return min_cost_map;
+    }
+
+    public long minimumCost(String source, String target, char[] original, char[] changed, int[] cost) {
+        Map<Character, ArrayList<Pair>> map = new HashMap<>();
+
+        int n = original.length;
+        
+        //Creating the ArrayList for each Node to Store neighbours.
+        for(char i : original) map.put(i, new ArrayList<Pair>());
+
+        //placing the neighbours in the arraylist.
+        for(int i = 0;i<n;i++)  map.get(original[i]).add(new Pair(changed[i], cost[i]));
+
+        // Creating the hashmap where it store all the minimum distances from source to destination.
+        HashMap<Character, HashMap<Character, Integer>> min_cost_maps = new HashMap<>();
+
+        //Finding the shortest path from every vertex to every vertex and storing them in the hashMap.
+        for(int i = 0;i<source.length();i++){
+            if(min_cost_maps.containsKey(source.charAt(i)))     continue;
+
+            min_cost_maps.put(source.charAt(i), dijkstra(source.charAt(i), map));
+        }
+
+        //Finding the cost to convert the source to target by using the hashMap.
+        long ans = 0L;
+        for(int i = 0;i < source.length();i++){
+
+            //If source or target character is not present in the min_cost_maps then returning -1.
+            if(source.charAt(i) != target.charAt(i)){
+                if(!min_cost_maps.containsKey(source.charAt(i)) || !min_cost_maps.get(source.charAt(i)).containsKey(target.charAt(i)))    return -1;
+                ans += min_cost_maps.get(source.charAt(i)).get(target.charAt(i));
+            } 
+        }
+        return ans;
+    }
+}
