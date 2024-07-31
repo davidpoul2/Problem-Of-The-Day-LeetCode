@@ -1,0 +1,30 @@
+1105.  Filling the Book Shelves.
+
+class Solution {
+
+    private int minHeight(int[][] books, int width, int index, HashMap<Integer,Integer> cache){
+        if(index >= books.length)   return 0;
+        if(cache.containsKey(index))    return cache.get(index);
+        int max_height = 0;
+        int curr_width = width;
+        int res = Integer.MAX_VALUE;
+
+        for(int i = index;i<books.length;i++){
+            int widthB = books[i][0];
+            int height = books[i][1];
+            if(widthB > curr_width)  break;
+            
+                
+                curr_width -= widthB;
+                max_height = Math.max(max_height, height);
+                res = Math.min(res, minHeight(books, width, i+1, cache) + max_height);
+                cache.put(index, res);
+            
+        }
+        return res;
+    }
+
+    public int minHeightShelves(int[][] books, int shelfWidth) {
+        return minHeight(books, shelfWidth,0, new HashMap<>());
+    }
+}
