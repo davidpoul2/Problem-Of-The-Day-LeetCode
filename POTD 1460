@@ -1,0 +1,27 @@
+1460.  Make Two Arrays Equal by Reversing Subarrays.
+
+class Solution {
+    public boolean canBeEqual(int[] target, int[] arr) {
+        /*HashMap<Integer,Integer> map = new HashMap<>();
+
+        for(int i : target) map.put(i, map.getOrDefault(i,0)+1);
+
+        for(int i = 0;i<arr.length;i++){
+            if(!map.containsKey(arr[i])) return false;
+            int value = map.get(arr[i]);
+            value--;
+            if(value == 0)  map.remove(arr[i]);
+            else map.put(i,value);
+        }
+
+        return true;*/
+        
+        Arrays.sort(target);
+        Arrays.sort(arr);
+
+        for(int i = 0;i<arr.length;i++){
+            if(target[i] != arr[i]) return false;
+        }
+        return true;
+    }
+}
