@@ -1,0 +1,13 @@
+2053.  Kth Distinct String in an Array
+
+class Solution {
+    public String kthDistinct(String[] arr, int k) {
+
+        List<String> arrL = Arrays.asList(arr);
+        List<String> list = arrL.stream().
+        filter(i -> Collections.frequency(arrL,i) == 1).
+        collect(Collectors.toList());
+
+        return list.size() < k ? "":list.get(k-1);
+    }
+}
