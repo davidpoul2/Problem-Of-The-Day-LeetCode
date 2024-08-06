@@ -1,0 +1,33 @@
+3016.  Minimum Number of Pushes to Type Word 11
+
+class Solution {
+    public int minimumPushes(String word) {
+        Map<Character, Integer> map = new HashMap<>();
+
+        //Storing the characters in the map as per the count of characters
+        for(int i = 0;i<word.length();i++){
+            map.put(word.charAt(i), map.getOrDefault(word.charAt(i), 0)+1);
+        }
+
+        // Sorting the map using stream based on the value in map.
+        List<Map.Entry<Character, Integer>> list = map.entrySet().stream().
+                sorted(Map.Entry.comparingByValue()).
+                collect(Collectors.toList());
+
+        // Reversing the map.
+        Collections.reverse(list);
+
+        int val = 0;
+        int pushes = 0;
+
+        // counting the pushes based on the map.
+        for(int i = 0;i<list.size();i++){
+            val++;
+            if(val <= 8) pushes += (1)*list.get(i).getValue();
+            else if(val > 8 && val <= 16)  pushes += (2)*list.get(i).getValue();
+            else if(val > 16 && val <= 24)  pushes += (3)*list.get(i).getValue();
+            else    pushes += (4)*list.get(i).getValue();
+        }
+        return pushes;
+    }
+}
