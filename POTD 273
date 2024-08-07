@@ -1,0 +1,111 @@
+273.  Integer to English Word
+
+class Solution {
+
+    private String ones(int n){
+        switch(n){
+            case 1:
+                return "One ";
+            case 2:
+                return "Two ";
+            case 3:
+                return "Three ";
+            case 4:
+                return "Four ";
+            case 5:
+                return "Five ";
+            case 6:
+                return "Six ";
+            case 7:
+                return "Seven ";
+            case 8:
+                return "Eight ";
+            case 9:
+                return "Nine ";
+            case 10:
+                return "Ten ";
+            case 11:
+                return "Eleven ";
+            case 12:
+                return "Twelve ";
+            case 13:
+                return "Thirteen ";
+            case 14:
+                return "Fourteen ";
+            case 15:
+                return "Fifteen ";
+            case 16:
+                return "Sixteen ";
+            case 17:
+                return "Seventeen ";
+            case 18:
+                return "Eighteen ";
+            case 19:
+                return "Nineteen ";
+        }
+        return "";
+    }
+
+    private String tens(int n){
+            if( n >= 20 && n < 30)
+                return "Twenty ";
+            if( n >= 30 && n < 40)
+                return "Thirty ";
+            if( n >= 40 && n < 50)
+                return "Forty ";
+            if( n >= 50 && n < 60)
+                return "Fifty ";
+            if( n >= 60 && n < 70)
+                return "Sixty ";
+            if( n >= 70 && n < 80)
+                return "Seventy ";
+            if( n >= 80 && n < 90)
+                return "Eighty ";
+            if( n >= 90 && n < 100) 
+                return "Ninety ";
+        return "";
+    }
+
+    private String pos(int n){
+        switch(n){
+            case 1: return "Thousand ";
+            case 2: return "Million ";
+            case 3: return "Billion ";
+        }
+        return "";
+    }
+
+    public String numberToWords(int num) {
+        if(num == 0)    return "Zero";
+        String res = "";
+
+        int i = 0;
+        while(num > 0){
+            int val = num%1000;
+            num /= 1000;
+            String ans = "";
+            String n = String.valueOf(val);
+            if(n.length() == 3){
+                String t = ones(val/100);
+                if(t != null)  ans += t + "Hundred ";
+            }
+            if(n.length() >= 2){
+                int ten_s = val%100;
+                if(ten_s > 19){
+                    ans += tens(ten_s);
+                    ans += ones(ten_s%10);
+                }
+                else{
+                    ans += ones(ten_s);
+                }
+            }
+            if(n.length() == 1) ans += ones(val);
+            if(val != 0)
+                res = ans + pos(i) + res;
+            else 
+                res = ans + res;
+            i++;
+        }
+        return res.substring(0,res.length()-1);
+    }
+}
