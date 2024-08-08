@@ -1,0 +1,37 @@
+885.  Spiral Matrix 111
+
+class Solution {
+    public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+        int[] row = {0, 1, 0, -1};
+        int[] col = {1, 0, -1, 0};
+
+        int steps = 1;
+        int i = 0;
+        int r = rStart;
+        int c = cStart;
+        int count = 0;
+
+        // The length of the result array is number of rows and cols.
+        int[][] res = new int[rows*cols][2];
+
+        // Count variable counts the number of indecies filled in the array.
+        while(count < res.length){
+            for(int k = 0;k<2;k++){
+                int dc = col[i];
+                int dr = row[i];
+                for(int j = 0;j<steps;j++){
+                    if(r >= 0 && r < rows && c >= 0 && c < cols){
+                        res[count][0] = r;
+                        res[count][1] = c;
+                        count++;
+                    }
+                    r = r + dr;
+                    c = c + dc;
+                }
+                i = (i + 1)%4;
+            }
+            steps++;
+        }
+        return res;
+    }
+}
