@@ -1,0 +1,72 @@
+840. Magic Squares In Grid  
+
+class Solution {
+
+    private boolean isMagicSquare(int[][] grid, int r, int c){
+        
+        Set<Integer> set = new HashSet<>();
+        Collections.addAll(set, 1,2,3,4,5,6,7,8,9);
+        int allSum = 45;
+
+        // Check wether the numbers in the magic matrix are in the range 1 to 9.
+        int tsum = 0;
+        for(int i = r;i<r+3;i++){
+            for(int j = c;j<c+3;j++){
+                tsum += grid[i][j];
+                if(set.contains(grid[i][j]))   set.remove(grid[i][j]);
+            }
+        }
+        if(set.size() != 0) return false;
+        if(tsum != allSum)  return false;
+
+        // Checking the sum of the rows are equal.
+        int rsum = -1;
+        for(int i = r;i<r+3;i++){
+            int sum = 0;
+            for(int j = c;j<c+3;j++){
+                sum += grid[i][j];
+            }
+            if(rsum == -1)   rsum = sum;
+            else if(rsum != sum)    return false;
+        }
+
+        // Checking the sum of the all columns are equal.
+        int csum = -1;
+        for(int i = c;i<c+3;i++){
+            int sum = 0;
+            for(int j = r;j<r+3;j++){
+                sum += grid[j][i];
+            }
+            if(csum == -1 )    csum = sum;
+            else if(csum != sum)    return false;
+        }
+
+        // Checking wether the row sum and col sum are equal or not.
+        if(rsum != csum) return false;
+
+        // Checking the diagonal sum of both sides.
+        int dsum = -1;
+        int d1 = 0, d2 = 0;
+        for(int i = 0;i<3;i++){
+            d1 += grid[r+i][c+i];
+            d2 += grid[r+i][c+2-i];
+        }
+        if(d1 != d2)    return false;
+        if(d1 != rsum)  return false;
+
+        return true;
+    }
+
+    public int numMagicSquaresInside(int[][] grid) {
+        int count = 0;
+
+        int n = grid.length;
+        int m = grid[0].length;
+        for(int i = 0;i<=n-3;i++){
+            for(int j = 0;j<=m-3;j++){
+                if(isMagicSquare(grid,i,j)) count++;
+            }
+        }
+        return count;
+    }
+}
