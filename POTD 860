@@ -1,0 +1,32 @@
+860.  Lemonade Change
+
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        int fives = 0;
+        int tens = 0;
+        int twentys = 0;
+        for(int i = 0;i<bills.length;i++){
+            if(bills[i] == 5){
+                fives++;
+            }
+            else if(bills[i] == 10){
+                if(fives == 0)  return false;
+                fives--;
+                tens++;
+            }
+            else{
+                if(fives ==0 || ( fives < 3 &&tens ==0))   return false;
+                if(tens == 0){
+                    fives -= 3;
+                }
+                else{
+                    fives--;
+                    tens--;
+                }
+                
+                twentys++;
+            }
+        }
+        return true;
+    }
+}
