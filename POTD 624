@@ -1,0 +1,24 @@
+624.  Maximum Distance in Arrays.
+
+class Solution {
+    public int maxDistance(List<List<Integer>> arrays) {
+        int min = arrays.get(0).get(0);
+        int max = arrays.get(0).get(arrays.get(0).size()-1);
+
+        int res = 0;
+        int m = arrays.size();
+
+        for(int i = 1;i<m;i++){
+
+            int tmin = arrays.get(i).get(0);
+            int tmax = arrays.get(i).get(arrays.get(i).size()-1);
+            res = Math.max(res,
+                Math.max(tmax-min, max - tmin) 
+            );
+
+            min = Math.min(min, tmin);
+            max = Math.max(max, tmax);
+        }
+        return res;
+    }
+}
