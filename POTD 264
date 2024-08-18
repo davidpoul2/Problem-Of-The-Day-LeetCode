@@ -1,0 +1,43 @@
+264.  Ugly Number 11
+
+class Solution {
+
+// Instead of looking the ugly numbers here we are created the ugly numbers as they are the factors of 2,3,5 the genearated numbers must be the factors of 2,3,5.
+
+    public int nthUglyNumber(int n) {
+        // TreeSet<Long> set = new TreeSet<>();
+
+        // set.add(1L);
+        // Long curr = 1L;
+        // for(int i = 0;i<n;i++){
+        //     curr = set.pollFirst();
+
+        //     set.add(curr*2);
+        //     set.add(curr*3);
+        //     set.add(curr*5);
+        // }
+
+        // return curr.intValue();
+
+        PriorityQueue<Long> pq = new PriorityQueue<>();
+        Set<Long> set = new HashSet<>();
+
+        int primef[] = {2,3,5};
+
+        pq.add(1L);
+        set.add(1L);
+
+        Long curr = 1L;
+        for(int i = 0;i<n;i++){
+            curr = pq.poll();
+
+            for(int prime: primef){
+                if(set.add(prime*curr)){
+                    pq.add(curr*prime);
+                }
+            }
+            
+        }
+        return curr.intValue();
+    }
+}
