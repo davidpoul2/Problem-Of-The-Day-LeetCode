@@ -1,0 +1,91 @@
+592.  Fraction Addition and Subtraction.
+
+class Solution {
+
+    private int LCM(int n , int m){
+        int lcm = Math.max(n,m);
+        while(true){
+            if(lcm%n == 0&& lcm%m == 0) return lcm;
+            lcm++;
+        }
+    }
+
+    private int HCF(int n, int m){
+        if(m == 0)  return n;
+        return HCF(m, n%m);
+    }
+
+    public String fractionAddition(String expression) {
+        Map<Integer, Integer> map = new HashMap<>();
+
+        char sign = '+';
+        String num = "";
+        String dem = "";
+        boolean numFound = false;
+        int n = expression.length();
+
+        for(int i= 0;i<=n;i++)
+        {
+            if(i ==n || (expression.charAt(i) == '+' || expression.charAt(i) == '-')){
+                if(!(num.isEmpty() || dem.isEmpty())){
+                    int val1 = Integer.parseInt(num);
+                    int val2 = Integer.parseInt(dem);
+                    if(sign == '-') val1 = -(val1);
+                    map.put(val2, map.getOrDefault(val2, 0)+val1);
+                    if(map.get(val2) == 0)  map.remove(val2);
+                }
+                if(i < n) sign = expression.charAt(i);
+                numFound = false;
+            }
+
+            else if(Character.isDigit(expression.charAt(i))){
+                String temp = "";
+                temp += expression.charAt(i);
+                if(expression.charAt(i) == '1' && i+1 < n){
+                    if(Character.isDigit(expression.charAt(i+1))){
+                        temp += expression.charAt(i+1);
+                        i++;
+                    }
+                }
+                if(numFound)    dem = temp;
+                else num = temp;
+            }
+            else if(expression.charAt(i) == '/')    numFound = true;
+            
+        }
+        //System.out.println(map);
+        int numerator = 0;
+        int denominator = 1;
+
+        if(map.size() == 0) return numerator+"/"+denominator;
+
+
+        if(map.size() == 1) {
+            Map.Entry<Integer,Integer> firstEntry = map.entrySet().iterator().next();
+            numerator = firstEntry.getValue();
+            denominator = firstEntry.getKey();
+            if(numerator%denominator == 0)  return (numerator/denominator)+"/"+1;
+            int hcf = HCF(numerator, denominator);
+            hcf = Math.abs(hcf);
+            numerator /= hcf;
+            denominator /= hcf;
+            return firstEntry.getValue() +"/"+firstEntry.getKey();
+        }
+
+        denominator = 1;
+        for(Map.Entry<Integer,Integer> m : map.entrySet()) 
+            denominator = LCM(denominator, m.getKey());
+
+        numerator = 0;
+        for(Map.Entry<Integer,Integer> m : map.entrySet()){
+            int temp = denominator/m.getKey();
+            numerator += temp*m.getValue();
+        }
+        if(numerator%denominator == 0)  return (numerator/denominator)+"/"+1;
+        int hcf = HCF(numerator, denominator);
+        hcf  = Math.abs(hcf);
+            numerator /= hcf;
+            denominator /= hcf;
+        return numerator+"/"+denominator;
+    }
+}
