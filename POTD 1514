@@ -1,0 +1,81 @@
+1514.  Path with Maximum Probability.
+
+class Pair{
+    int node;
+    double prob;
+
+    public Pair(int node, double prob){
+        this.node = node;
+        this.prob = prob;
+    }
+}
+
+class Solution {
+
+    // double prob = 0;
+
+    // Time Limit Exceed for DFS approch.
+    // private void dfs(int start_node, int end_node, ArrayList<Pair>[] adj, double p, boolean vis[]){
+    //     if(vis[start_node]) return;
+    //     if(end_node == start_node){
+    //         this.prob = Math.max(this.prob, p);
+    //         return;
+    //     }
+
+    //     vis[start_node] = true;
+    //     for(int i = 0;i<adj[start_node].size();i++){
+    //         dfs(adj[start_node].get(i).node, end_node, adj, p*adj[start_node].get(i).prob, vis);
+    //     }
+    //     vis[start_node] = false;
+    // }
+
+// Dijikstra's Algorithm.
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+        ArrayList<Pair>[] adj = new ArrayList[n];
+
+        for(int i = 0;i<n;i++)  adj[i] = new ArrayList<>();
+
+        for(int i = 0; i < edges.length;i++){
+            adj[edges[i][0]].add(new Pair(edges[i][1], succProb[i]));
+            adj[edges[i][1]].add(new Pair(edges[i][0], succProb[i]));
+        }
+
+        //boolean vis[] = new boolean[n];
+
+        double p[] = new double[n];
+
+        Queue<Pair> queue = new LinkedList<>();
+
+        queue.add(new Pair(start_node, 1));
+        p[start_node] = 1d;
+
+        while(!queue.isEmpty()){
+
+            int size = queue.size();
+
+            for(int i = 0;i<size;i++){
+                Pair pair = queue.poll();
+                if(pair.node == end_node)  continue;
+                
+                int node = pair.node;
+                double prob = pair.prob;
+
+                for(int j = 0;j<adj[node].size();j++){
+                    int nodet = adj[node].get(j).node;
+                    double probt = adj[node].get(j).prob;
+                    if(p[nodet] < prob*probt){
+                        p[nodet] = prob*probt;
+                        queue.add(new Pair(nodet, p[nodet]));
+                    }
+                }
+            }
+            
+
+
+        }
+
+        //dfs(start_node, end_node, adj, 1, vis);
+
+        return p[end_node];
+    }
+}
