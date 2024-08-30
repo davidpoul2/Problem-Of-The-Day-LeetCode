@@ -1,0 +1,71 @@
+2699.  Modify Graph Edge Weight.
+
+class Solution {
+    private static final int INF = (int)2e9;
+    record Pair(int node, int weight){ }
+
+    public static int[][] modifiedGraphEdges(int n, int[][] edges, int source, int destination, int target) {
+        
+        int lenN = edges.length;
+
+        // Creating Adjacency List.
+        ArrayList<Pair> adj[] = new ArrayList[n];
+        for(int i = 0;i<n;i++)  adj[i] = new ArrayList<>();
+
+        for(int edge[] : edges){
+            if(edge[2] != -1){
+                adj[edge[0]].add(new Pair(edge[1], edge[2]));
+                adj[edge[1]].add(new Pair(edge[0], edge[2]));
+            }
+        }
+
+        int currentMinDis = runDijkstra(n,edges, source, destination,adj);
+
+        if(currentMinDis < target)  return new int[0][0];
+
+        boolean matchesTarget = (currentMinDis == target);
+        for(int[] edge: edges){
+            if(edge[2] != -1)   continue;
+
+            edge[2] = (matchesTarget) ? INF : 1;
+            adj[edge[0]].add(new Pair(edge[1], edge[2]));
+            adj[edge[1]].add(new Pair(edge[0], edge[2]));
+
+            if(!matchesTarget){
+                int newMinDis = runDijkstra(n,edges, source, destination, adj);
+
+                if(newMinDis <= target){
+                    matchesTarget = true;
+                    edge[2] += target - newMinDis;
+                }
+            }
+        }
+
+        
+        return matchesTarget ? edges : new int[0][0];
+    }
+
+    // Dijkstra's Algorithm.
+    private static int runDijkstra(int n, int edges[][], int src, int dest, ArrayList<Pair>[] adj){
+        int minDis[] = new int[n];
+        Arrays.fill(minDis, INF);
+
+        var pq = new PriorityQueue<Pair>(Comparator.comparingLong(Pair::weight));
+
+        pq.add(new Pair(src, 0));
+        minDis[src] = 0;
+
+        while(!pq.isEmpty()){
+            var curr = pq.poll();
+
+            for(var neigh: adj[curr.node]){
+                if(neigh.weight + curr.weight < minDis[neigh.node]){
+                    minDis[neigh.node] = neigh.weight + curr.weight;
+                    pq.add(new Pair(neigh.node, minDis[neigh.node]));
+                }
+            }
+        }
+
+        return minDis[dest];
+    }
+}
