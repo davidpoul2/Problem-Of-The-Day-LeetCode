@@ -1,0 +1,44 @@
+1514.  Path with Maximum Probability
+
+
+class Solution {
+    record Pair(int v, double weight){}
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+        
+        // Creating Adjacency List.
+        ArrayList<Pair>[] adj = new ArrayList[n];
+
+        for(int i = 0;i<n;i++)  adj[i] = new ArrayList<>();
+
+        for(int i = 0;i< edges.length;i++){
+            adj[edges[i][0]].add(new Pair(edges[i][1], succProb[i]));
+            adj[edges[i][1]].add(new Pair(edges[i][0], succProb[i]));
+        }
+
+        return runDijkstra(adj, start_node, end_node,n);
+    }
+
+    private double runDijkstra(ArrayList<Pair>[] adj, int start, int end, int n){
+
+        var pq = new PriorityQueue<Pair>(Comparator.comparingDouble(Pair::weight).reversed());
+        double minDis[] = new double[n];
+
+        pq.add(new Pair(start, 1));
+        minDis[start] = 1;
+
+        while(!pq.isEmpty()){
+
+            var curr = pq.poll();
+            if(curr.v == end)   return minDis[end];
+
+            for(var neigh : adj[curr.v]){
+                if(neigh.weight * curr.weight > minDis[neigh.v]){
+                    minDis[neigh.v] = neigh.weight*curr.weight;
+                    pq.add(new Pair(neigh.v, minDis[neigh.v]));
+                }
+            }
+        }
+        return minDis[end];
+
+    }
+}
