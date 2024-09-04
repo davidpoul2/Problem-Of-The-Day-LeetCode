@@ -1,0 +1,121 @@
+878.  Walking Robot Simulation.
+
+class Axis{
+    int i;
+    public Axis(int i){
+        this.i = i;
+    }
+}
+
+class Solution {
+    
+    public int robotSim(int[] commands, int[][] obstacles) {
+
+        int n = commands.length;
+        int maxDis = 0;
+
+        Axis x = new Axis(0);
+        Axis y = new Axis(0);
+        boolean isPositive = true;
+        String direction = "north";
+
+        Map<String, String[] > map = new HashMap<>();
+        map.put("north", new String[]{"east", "west"});
+        map.put("east", new String[]{"south", "north"});
+        map.put("west", new String[]{"north", "south"});
+        map.put("south", new String[]{"west", "east"});
+
+        Set<String> set = new HashSet<>();
+        for(int[] obstacle : obstacles){
+            set.add(obstacle[0] + " " + obstacle[1]);
+        }
+
+        Axis temp = y;
+        for(int i = 0;i<n;i++){
+            if(commands[i] > 0){
+                for(int j= 1;j<=commands[i];j++){
+                    if(isPositive){
+                        if(!set.isEmpty() && set.contains((temp == x ? temp.i + j : x.i)+ " " + (temp == y ? temp.i+j : y.i))){
+                            commands[i] = (j-1);
+                            //set.remove((temp == x ? temp.i + j : x.i)+ " " + (temp == y ? temp.i+j : y.i));
+                            break;
+                        }  
+                    }
+
+                    else{
+                        if(!set.isEmpty() && set.contains((temp == x ? temp.i - j : x.i) + " " + (temp == y ? temp.i-j : y.i))){
+                            commands[i] = (j-1);
+                            //set.remove((temp == x ? temp.i - j : x.i)+ " " + (temp == y ? temp.i - j : y.i));
+                            break;
+                        }  
+                    }
+                }
+                if(isPositive)  temp.i += commands[i];
+                else    temp.i -= commands[i];
+            }
+            else{
+                int index = (commands[i] == -1) ? 0 : 1;
+                String dir = map.get(direction)[index];
+
+                if(dir.equals("south") || dir.equals("west"))   isPositive = false;
+                else isPositive = true;
+
+                if(dir.equals("south") || dir.equals("north"))   temp = y;
+                else temp = x;
+
+                direction = dir;
+            }
+            //System.out.println(x.i + " " + y.i + " " + direction + " " + temp.i);
+            maxDis = Math.max(((x.i*x.i) + (y.i*y.i)), maxDis);
+        }
+        return maxDis;
+    }
+}
+
+
+// Second way of writing the code(Some Optimal)
+class Solution {
+    public int robotSim(int[] commands, int[][] obstacles) {
+        
+        // Hashing the obstacles to get them in O(1) time Complexity.
+        Set<String> set = new HashSet<>();
+        for(int[] obstacle : obstacles){
+            set.add(obstacle[0] + " " + obstacle[1]);
+        }
+
+        // Directions of "north", "east", "south", "west".
+        int[][] directions = {{0,1},{1,0},{0,-1}, {-1,0}};
+        int currPosition[] = {0,0};
+        int maxDis = 0;
+        int currDirection = 0;
+
+        for(int command : commands){
+            if(command == -1){
+                // Moving one step to right.
+                currDirection = (currDirection+1)%4;
+                continue;
+            }
+
+            else if(command == -2){
+                // Moving three Steps to right.
+                currDirection = (currDirection+3)%4;
+                continue;
+            }
+
+            else{
+                int[] direction = directions[currDirection];
+                for(int step = 0;step<command;step++){
+                    int xStep = direction[0] + currPosition[0];
+                    int yStep = direction[1] + currPosition[1];
+                    
+                    if(set.contains(xStep + " " + yStep))   break;
+
+                    currPosition[0] = xStep;
+                    currPosition[1] = yStep;
+                    maxDis = Math.max(maxDis, ((xStep*xStep)+(yStep*yStep)));
+                }
+            }
+        }
+        return maxDis;
+    }
+}
