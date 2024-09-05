@@ -1,0 +1,79 @@
+2028.  Find Missing Observations.
+
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        
+        int nsum = 0;
+        
+        int nRolls[] = new int[n];
+
+        for(int i : rolls)  nsum += i;
+
+        long nSumM = mean * (n+rolls.length);
+
+        int requiredSum = (int)(nSumM - nsum);
+
+        if(requiredSum < n) return new int[0];
+        if(requiredSum > n*6)   return new int[0];
+
+        int quotient = 0;
+        int reminder = 0;
+        for(int i = 6;i>=1;i--){
+            
+            reminder = 0;
+            quotient = requiredSum/i;
+
+            if(requiredSum%i != 0){
+                quotient++;
+                reminder = requiredSum%i;
+            }
+            else reminder = 0;
+
+            if(quotient >= n){
+                int adjust = (quotient - n)*i;
+                for(int j = 0;j<n;j++){
+                    if(reminder != 0 && j == n-1){
+                        nRolls[j] = reminder;
+                    }
+
+                    else nRolls[j] = i;
+                    while(nRolls[j]+1 <= 6 && adjust != 0){
+                        nRolls[j] += 1;
+                        adjust--;
+                    }
+                }
+                return nRolls;
+            }
+        }
+        return new int[0];
+    }
+}
+
+// Another way to solve (optimal).
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        
+        int nsum = 0;
+        
+        int nRolls[] = new int[n];
+
+        for(int i : rolls)  nsum += i;
+
+        long nSumM = mean * (n+rolls.length);
+
+        int requiredSum = (int)(nSumM - nsum);
+
+        if(requiredSum < n || requiredSum > n*6) return new int[0];
+
+        int quotient = requiredSum/n;
+
+        Arrays.fill(nRolls, quotient);
+
+        int mod = requiredSum%n;
+        for(int i = 0;i<mod;i++){
+            nRolls[i]++;
+        }
+
+        return nRolls;
+    }
+}
