@@ -1,0 +1,59 @@
+725.  Split Linked List in Parts.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+
+    // return Size of the LinkedList
+    private int length(ListNode head){
+        if(head == null)    return 0;
+        int len = 1;
+        while(head.next != null){
+            head = head.next;
+            len++;
+        }
+        return len;
+    }
+
+    public ListNode[] splitListToParts (ListNode head, int k) {
+        
+        int size = length(head);
+        ListNode[] arr = new ListNode[k];
+
+        int nodesPerCell = size/k;
+        int extraNodes = size%k;
+
+        ListNode curr = head;
+        for(int i= 0;i<k;i++){
+
+            ListNode prev = null;
+            ListNode left = curr;
+            int count = 0;
+            int len = nodesPerCell;
+
+            if(extraNodes > 0){
+                len++;
+                extraNodes--;
+            }
+
+            while(curr != null && count < len){
+                prev = curr;
+                curr = curr.next;
+                count++;
+            }
+
+            if(prev != null)    prev.next = null;
+            arr[i] = left;
+            left = curr;
+        }
+        return arr;
+    }
+}
