@@ -1,0 +1,45 @@
+2807.  Insert Greatest Common Divisors in Linked List.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+class Solution {
+
+    private int gcf(int n, int m){
+        if(n ==0)   return m;
+        if(m == 0)  return n;
+
+        if(n == m)  return n;
+
+        if(n>m) return gcf(n%m, m);
+        return gcf(n, m%n);
+    }
+
+    public ListNode insertGreatestCommonDivisors(ListNode head) {
+
+        if(head.next == null)   return head;
+        
+        ListNode first = head;
+        ListNode second = head.next;
+
+        while(second != null){
+
+            ListNode curr  = new ListNode(gcf(first.val, second.val));
+            first.next = curr;
+            curr.next = second;
+            first = second;
+            second = first.next;
+
+        }
+
+        return head;
+    }
+}
