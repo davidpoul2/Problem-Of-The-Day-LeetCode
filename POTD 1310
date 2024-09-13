@@ -1,0 +1,23 @@
+1310.  XOR Queries of a Subarray
+
+class Solution {
+    public int[] xorQueries(int[] arr, int[][] queries) {
+        
+        int qLen = queries.length;
+
+        int[] xor = new int[qLen];
+
+        int[] prefixXOR = new int[arr.length + 1];
+
+        // Calculating the prefix Xor 
+        for(int i= 0;i<arr.length;i++){
+            prefixXOR[i+1] = arr[i]^prefixXOR[i];
+        }
+
+        for(int i = 0;i<qLen;i++){
+            xor[i] = prefixXOR[queries[i][0]] ^ prefixXOR[queries[i][1] + 1];
+        }
+
+        return xor;
+    }
+}
