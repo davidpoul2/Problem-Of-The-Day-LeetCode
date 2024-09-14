@@ -1,0 +1,23 @@
+2419.  Longest Subarray with Maximum BitWise AND
+
+class Solution {
+
+    public int longestSubarray(int[] nums) {
+        
+        int max = 0;
+        int maxCount = 0;
+        int count = 0;
+        for(int i : nums){
+            if(max < i){
+                max = i;
+                maxCount = count = 0;
+            }
+            if(i == max){
+                count++;
+            }
+            else count = 0;
+            maxCount = Math.max(maxCount, count);
+        }
+        return maxCount;
+    }
+}
