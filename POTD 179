@@ -1,0 +1,19 @@
+179.  Largest Number.
+
+class Solution {
+    public String largestNumber(int[] nums) {
+        
+        int n = nums.length;
+        
+        List<String> list = new ArrayList<>();
+        for(int num : nums) list.add(num + "");
+
+        Collections.sort(list, (a,b)-> (b+a).compareTo(a+b));
+
+        if(list.get(0).equals("0")) return "0";
+
+        StringBuilder res = new StringBuilder();
+        for(String s : list)  res.append(s);
+        return res.toString();
+    }
+}
