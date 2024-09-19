@@ -1,0 +1,42 @@
+241.  Different Ways to Add Paranthesis.
+
+class Solution {
+    public List<Integer> diffWaysToCompute(String expression) {
+        return diffWaysToCompute(expression, 0, expression.length());
+    }
+
+    private List<Integer> diffWaysToCompute(String expression, int sIndex, int eIndex){
+    
+        List<Integer> res = new ArrayList<>();
+        if(sIndex > eIndex)    return res;
+        for(int i= sIndex;i<eIndex;i++){
+            if(!Character.isDigit(expression.charAt(i))){
+
+                List<Integer> left = diffWaysToCompute(expression, sIndex, i);
+                List<Integer> right = diffWaysToCompute(expression,i+1, eIndex);
+                
+                for(int l : left){
+                    for(int r : right){
+                        switch(expression.charAt(i)){
+                            case '-':
+                                res.add(l-r);
+                                break;
+                            case '+':
+                                res.add(l+r);
+                                break;
+                            case '*':
+                                res.add(l*r);
+                                break;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if(res.isEmpty()){
+            res.add(Integer.parseInt(expression.substring(sIndex, eIndex)));
+        }
+        return res;
+    }
+}
