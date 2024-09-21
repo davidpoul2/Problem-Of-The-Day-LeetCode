@@ -1,0 +1,48 @@
+386.  Lexicographical Numbers.
+
+// Brute Force.
+class Solution {
+    public List<Integer> lexicalOrder(int n) {
+        
+        PriorityQueue<String> pq = new PriorityQueue<>((o1, o2) -> o1.compareTo(o2));
+
+        List<Integer> list = new ArrayList<>();
+
+        for(int i =1;i<=n;i++)  pq.add(i+"");
+
+        while(!pq.isEmpty())    list.add(Integer.parseInt(pq.poll()));
+
+        return list;
+    }
+}
+
+// Optimal approch.
+class Solution {
+
+    private void find(int num, List<Integer> list, int n){
+
+        if(num > n) return;
+
+        list.add(num);
+        int i = 0;
+
+        while(i <= 9){
+            find(num*10 + i, list, n);
+            i++;
+        }
+        return;
+    }
+
+    public List<Integer> lexicalOrder(int n) {
+        
+        List<Integer> list = new ArrayList<>();
+
+        int i =1;
+        while(i < 10){
+            find(i, list, n);
+            i++;
+        }
+       
+        return list;
+    }
+}
