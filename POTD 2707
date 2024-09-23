@@ -1,0 +1,25 @@
+2707. Extra Characters in a String.
+
+class Solution {
+    public int minExtraChar(String s, String[] dictionary) {
+        Set<String> set = new HashSet<>(Arrays.asList(dictionary));
+        Map<Integer, Integer> map = new HashMap<>();
+        return minExtraChar(s, 0, set, map);
+    }
+
+    public int minExtraChar(String s, int start, Set<String> set, Map<Integer, Integer> map){
+
+        if(start == s.length()) return 0;
+
+        if(map.containsKey(start))  return map.get(start);
+
+        int ans = 1 + minExtraChar(s, start+1, set, map);
+        for(int end = start; end < s.length();end++){
+            if(set.contains(s.substring(start, end+1))){
+                ans = Math.min(ans, minExtraChar(s, end+1, set, map));
+            }
+        }
+        map.put(start, ans);
+        return ans;
+    }
+}
