@@ -1,0 +1,24 @@
+3043.  Find the Length of the Longest Common Prefix.
+
+class Solution {
+    public int longestCommonPrefix(int[] arr1, int[] arr2) {
+
+        int max = 0;
+        Set<String> set1 = new HashSet<>();
+
+        for(int n : arr1){
+            String s = n + "";
+            for(int i = 0;i<s.length();i++){
+                set1.add(s.substring(0,i+1));
+            }
+        }
+
+        for(int n: arr2){
+            String s = n +"";
+            for(int i =0;i<s.length();i++){
+                if(set1.contains(s.substring(0,i+1)))   max = Math.max(max, i+1);
+            }
+        }
+        return max;
+    }
+}
