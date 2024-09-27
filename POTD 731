@@ -1,0 +1,41 @@
+731.  My Calender II 
+
+class MyCalendarTwo {
+
+    List<int[]> bookings = null;
+    List<int[]> overLappedBooking = null;
+
+    public MyCalendarTwo() {
+        bookings = new ArrayList<>();
+        overLappedBooking = new ArrayList<>();
+    }
+
+    public int[] getOverLapped(int[] booking, int start, int end){
+        return new int[]{Math.max(booking[0], start), Math.min(booking[1], end)};
+    }
+
+    public boolean doesOverLap(int[] booking, int start, int end){
+        return !(booking[0] >= end || booking[1] <= start);
+    }
+    
+    public boolean book(int start, int end) {
+        
+        for(int[] booking : overLappedBooking){
+            if(doesOverLap(booking, start, end))    return false;
+        }
+
+        for(int[] booking : bookings){
+            if(doesOverLap(booking, start, end)){
+                overLappedBooking.add(getOverLapped(booking, start, end));
+            }
+        }
+        bookings.add(new int[]{start, end});
+        return true;
+    }
+}
+
+/**
+ * Your MyCalendarTwo object will be instantiated and called as such:
+ * MyCalendarTwo obj = new MyCalendarTwo();
+ * boolean param_1 = obj.book(start,end);
+ */
