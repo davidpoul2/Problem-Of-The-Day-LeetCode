@@ -1,0 +1,18 @@
+1497.  Check if Array Pairs Are Divisible by K.
+
+class Solution {
+    public boolean canArrange(int[] arr, int k) {
+        
+        int rem[] = new int[k];
+
+        for(int num : arr){
+            if(num < 0) num = k - (Math.abs(num)%k);
+            int complement = (k-(num%k))%k;
+            if(rem[complement] > 0) rem[complement]--;
+            else rem[num%k]++;
+        }
+
+        for(int num : rem)  if(num != 0)    return false;
+        return true;
+    }
+}
