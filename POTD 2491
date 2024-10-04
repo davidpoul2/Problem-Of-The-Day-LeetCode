@@ -1,0 +1,40 @@
+2491.  Divide Players into Teams of Equal Skill.
+
+class Solution {
+
+    private int max(int skill[]){
+        int max = 0;
+        for(int num : skill)    max = Math.max(max, num);
+        return max;
+    }
+
+    private int min(int[] skill){
+        int min = Integer.MAX_VALUE;
+        for(int num : skill)        min = Math.min(min, num);
+        return min;
+    }
+
+    public long dividePlayers(int[] skill) {
+        
+        int max = max(skill);
+        int min = min(skill);
+        int total = max + min;
+        int n = skill.length;
+
+        int[] cache = new int[max+1];
+
+        long totalSkill = 0L;
+        int pairs = 0;
+        for(int num : skill){
+            int complement = total-num;
+            if(cache[complement] > 0){
+                cache[complement]--;
+                totalSkill += complement * num;
+                pairs++;
+            }
+            else cache[num]++;
+        }
+
+        return (pairs == n/2)?totalSkill:-1;
+    }
+}
