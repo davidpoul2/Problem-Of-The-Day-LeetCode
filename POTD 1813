@@ -1,0 +1,45 @@
+1813.  Sentence Similarity III
+
+class Solution {
+    public boolean areSentencesSimilar(String sentence1, String sentence2) {
+        
+        String[] sen1 = sentence1.split(" ");
+        String[] sen2 = sentence2.split(" ");
+
+        int n = sen1.length,
+            m = sen2.length;
+
+        //if(n == m)  return sentence1.equals(sentence2);
+        
+        if(n > m)   return sentenceSimilar(sen1, sen2);
+        return sentenceSimilar(sen2, sen1);
+    }
+
+    public boolean sentenceSimilar(String[] sen1, String[] sen2){
+
+        int n = sen1.length,
+            m = sen2.length;
+
+        int i = 0,
+            j = m-1;
+
+        boolean flag = false;
+        int J = n-1;
+        while(i < m || j >= 0){
+            if(i < m && sen1[i].equals(sen2[i])){
+                flag = true;
+                i++;
+            } 
+            if(j >= 0 && sen1[J].equals(sen2[j])){
+                flag = true;
+                J--;
+                j--;
+            } 
+            if(!flag)   break;
+            flag = false;
+        }
+
+        if(i > j)   return true;
+        return false;
+    }   
+}
