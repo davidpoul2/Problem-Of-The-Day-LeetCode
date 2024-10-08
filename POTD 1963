@@ -1,0 +1,31 @@
+1963.  Minimum Number of Swaps to make the String Balanced.
+
+class Solution {
+    public int minSwaps(String s) {
+        
+        // counting the unbalanced closing brackets.
+        int countOpen = 0;
+        int countClose = 0;
+        for(int i = 0;i< s.length();i++){
+            if(s.charAt(i) == '['){
+                countOpen++;
+            }
+            else if(s.charAt(i) == ']'){
+                if(countOpen > 0){
+                    countOpen--;
+                }
+                else{
+                    countClose++;
+                }
+            }
+        }
+
+        // It's a pattern 
+        // here countClose is the unbalanced closing brackets.
+        // we can make it balanced by countClose/2.(if even)
+        // (countClose+1)/2 (if odd).
+        if(countClose%2 == 1)  countClose++;
+
+        return countClose/2;
+    }
+}
