@@ -1,0 +1,30 @@
+2406.  Divide Intervals Into Minimum Number of Groups.
+
+class Solution {
+    public int minGroups(int[][] intervals) {
+
+        // Finding the maximum overlap intervals to find the number of groups required to avoid overlapping in intervals.
+        // To sort the intervals we are using priorityQueue and both start and end are inclusive so we are adding the +1 to end to decrement while finding the overlapping intervals.
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b)-> {
+            if(a[0] == b[0])    return a[1] - b[1];
+            return a[0] - b[0];
+        });
+
+        for(int[] interval: intervals){
+            pq.add(new int[]{interval[0], 1});
+            pq.add(new int[]{interval[1]+1, -1});
+        }
+
+        int maxGroups = 0;
+        int groups = 0;
+        
+        while(!pq.isEmpty()){
+            var curr = pq.poll();
+            if(curr[1] == 1)    groups++;
+            else    groups--;
+            maxGroups = Math.max(maxGroups, groups);
+        }
+
+        return maxGroups;
+    }
+}
