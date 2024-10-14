@@ -1,0 +1,23 @@
+2530.  Maximal Score After Applying K Operations.
+
+class Solution {
+    public long maxKelements(int[] nums, int k) {
+        
+        long result = 0L;
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> b-a);
+        for(int num : nums){
+            pq.add(num);
+        }
+
+        while(k != 0){
+            var curr = pq.poll();
+            result += curr;
+            int mod = (curr%3 != 0) ? 1 : 0;
+            pq.add(mod + curr/3);
+            k--;
+        }
+
+        return result;
+        
+    }
+}
