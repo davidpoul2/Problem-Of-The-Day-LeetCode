@@ -1,0 +1,48 @@
+1405.  Longest Happy String.
+
+class Pair{
+    int count; 
+    char ch;
+    public Pair(int _count, char _ch){
+        this.count = _count;
+        this.ch = _ch;
+    }
+}
+
+class Solution {
+    public String longestDiverseString(int a, int b, int c) {
+        
+        PriorityQueue<Pair> pq = new PriorityQueue<>((i, j) -> j.count - i.count);
+
+        if(a > 0)   pq.add(new Pair(a, 'a'));
+        if(b > 0)   pq.add(new Pair(b, 'b'));
+        if(c > 0)   pq.add(new Pair(c, 'c'));
+        StringBuilder str = new StringBuilder();
+
+        while(!pq.isEmpty()){
+            var curr = pq.poll();
+            int count = curr.count;
+            char ch = curr.ch;
+            int n = str.length();
+
+            if(n > 1 && str.charAt(n-1) == ch && str.charAt(n-2) == ch){
+
+                if(pq.isEmpty())    break;
+
+                var temp = pq.poll();
+                str.append(temp.ch);
+                if(temp.count -1 > 0)   pq.add(new Pair(temp.count-1, temp.ch));
+            }
+            else{
+                count--;
+                str.append(ch);
+            }
+
+            if(count > 0){
+                pq.add(new Pair(count, ch));
+            }
+        }
+
+        return str.toString();
+    }
+}
