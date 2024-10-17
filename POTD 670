@@ -1,0 +1,30 @@
+670. Maximum Swap.
+
+class Solution {
+    public int maximumSwap(int num) {
+        
+        char digits[] = String.valueOf(num).toCharArray();
+        int n = digits.length;
+
+        for(int i =0;i<n;i++){
+            int first = Integer.valueOf(digits[i] + "");
+            int max = Integer.MIN_VALUE;
+            int index = -1;
+            for(int j = i;j < n;j++){
+                int second = Integer.valueOf(digits[j] + "");
+                if(second >= max){
+                    index = j;
+                    max = second;
+                }
+            }
+            if(max > first){
+                char temp = digits[i];
+                digits[i] = digits[index];
+                digits[index] = temp;
+                return Integer.valueOf(new String(digits));
+            }
+        }
+        return Integer.valueOf(new String(digits));
+
+    }
+}
