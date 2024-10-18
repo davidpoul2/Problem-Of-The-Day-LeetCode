@@ -1,0 +1,29 @@
+2044.  Count Number of Maximum Bitwise-OR Subsets.
+
+class Solution {
+
+    public int findMax(int nums[]){
+        int max = 0;
+        for(int num : nums) max |= num;
+        return max;
+    }
+
+    public int countMaxOrSubsets(int[] nums) {
+        int targetOR = findMax(nums);
+        Integer[][] memo = new Integer[nums.length][targetOR+1];
+        return count(nums, 0, targetOR, 0, memo);
+    }
+
+    public int count(int[] nums, int index, int targetOR, int currentOR, Integer[][] memo){
+
+        if(index >= nums.length){
+            return (targetOR == currentOR) ? 1 : 0;
+        }
+
+        if(memo[index][currentOR] != null)  return memo[index][currentOR];
+        
+        int left = count(nums, index+1, targetOR, currentOR|nums[index], memo);
+        int right = count(nums, index+1, targetOR, currentOR, memo);
+        return  memo[index][currentOR] = left + right;
+    }
+}
