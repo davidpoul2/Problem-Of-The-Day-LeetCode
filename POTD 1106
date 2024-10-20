@@ -1,0 +1,44 @@
+1106.  Parsing a Boolean Expression.
+
+class Solution {
+    int i;
+    public boolean parseBoolExpr(String expression) {
+        return helper(expression);
+    }
+
+    public boolean helper(String s){
+
+        char ch = s.charAt(i);
+        i += 1;
+
+        if(ch == 't')
+            return true;
+
+        else if(ch == 'f')
+            return false;
+
+        else if(ch == '!'){
+            i += 1;
+            boolean res = !helper(s);
+            i += 1;
+            return res;
+        }
+
+        boolean and = true;
+        boolean or = false;
+        i += 1;
+        while(s.charAt(i) != ')'){
+            if(s.charAt(i) != ','){
+                boolean res = helper(s);
+                and &= res;
+                or |= res;
+            }
+            else 
+                i += 1;
+        }
+        i += 1;
+
+        if(ch == '&')   return and;
+        return or;
+    }
+}
