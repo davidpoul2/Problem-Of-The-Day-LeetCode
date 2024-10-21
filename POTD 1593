@@ -1,0 +1,23 @@
+1593.  Split a String into the Max Number of Unique SubStrings.
+
+class Solution {
+    public int maxUniqueSplit(String s) {
+        
+        Set<String> seen = new HashSet<>();
+        return maxUnique(s, seen, 0);
+    }
+
+    public int maxUnique(String s, Set<String> seen, int index){
+        if(index >= s.length()) return 0;
+
+        int max = 0;
+        for(int i  = index, j = index ;i < s.length();i++){
+
+            if(seen.add(s.substring(j, i+1))){
+                max = Math.max(max, maxUnique(s, seen, i+1)+1);
+                seen.remove(s.substring(j, i+1));
+            }
+        }
+        return max;
+    }
+}
