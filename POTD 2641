@@ -1,0 +1,66 @@
+2641.  Cousins in Binary Tree II
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+
+    public int total_level_sum(Queue<TreeNode> queue){
+        int sum = 0;
+        for(int i = 0;i<queue.size();i++){
+            var curr = queue.poll();
+            if(curr.left != null)   sum += curr.left.val;
+            if(curr.right != null)  sum += curr.right.val;
+            queue.add(curr);
+        }
+
+        return sum;
+    }
+
+    public TreeNode replaceValueInTree(TreeNode root) {
+        
+        if(root == null)    return root;
+        Queue<TreeNode> queue = new LinkedList<>();
+        root.val = 0;
+        queue.add(root);
+
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            int sum = total_level_sum(queue);
+
+            for(int i = 0;i<size;i++){
+                var curr = queue.poll();
+                if(curr.left != null && curr.right != null){
+                    int val = sum - (curr.left.val + curr.right.val);
+                    curr.left.val = val;
+                    curr.right.val = val;
+                    queue.add(curr.left);
+                    queue.add(curr.right);
+                }
+                else if(curr.left != null){
+                    int val = sum - curr.left.val;
+                    curr.left.val = val;
+                    queue.add(curr.left);
+                }
+                else if(curr.right != null){
+                    int val = sum - curr.right.val;
+                    curr.right.val = val;
+                    queue.add(curr.right);
+                }
+            }
+        }
+        return root;
+    }
+}
