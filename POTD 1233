@@ -1,0 +1,23 @@
+1233.  Remove Sub-Folders from the Filesystem.
+
+class Solution {
+    public List<String> removeSubfolders(String[] folders) {
+        Arrays.sort(folders, (a,b)-> a.length()-b.length());
+
+        Set<String> set = new HashSet<>();
+        for(String folder : folders){
+            boolean flag = false;
+            int i = 0;
+            for(;i<folder.length();i++){
+                if(folder.charAt(i)== '/')
+                    if(set.contains(folder.substring(0,i)))     break;
+            }
+            if(i == folder.length()) set.add(folder);
+        }
+
+        List<String> list = new ArrayList<>();
+        for(String str : set)   list.add(str);
+
+        return list;
+    }
+}
