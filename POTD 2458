@@ -1,0 +1,87 @@
+2458.  Height of Binary Tree After Subtree Removal Queries.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+
+    public int treeHeight(TreeNode root, int level,
+                                         Map<Integer, Integer> levelMap,
+                                         Map<Integer, Integer> heightMap,
+                                         Map<Integer, int[]> top2Height)
+    {
+        if(root == null)    return 0;
+
+        // Left Tree
+        int left = treeHeight(root.left, level+1, levelMap, heightMap, top2Height);
+        // Right Tree
+        int right = treeHeight(root.right, level+1, levelMap, heightMap, top2Height);
+
+        // Height of current subTree.
+        int height = Math.max(left, right)+1;
+        heightMap.put(root.val, height);
+        levelMap.put(root.val, level);
+
+        // finding the top 2 heights in the current level.
+        if(!top2Height.containsKey(level))
+            top2Height.put(level, new int[]{-1,-1});
+        
+        int[] top2 = top2Height.get(level);
+
+        if(top2[0] <= height){  
+            top2[1] = top2[0];
+            top2[0] = height;
+        }
+        else if(top2[1] < height) 
+            top2[1] = height;
+        
+        return height;
+    }
+
+    public int[] treeQueries(TreeNode root, int[] queries) {
+        
+        Map<Integer, Integer> levelMap = new HashMap<>();
+        Map<Integer, Integer> heightMap = new HashMap<>();
+        Map<Integer, int[]> top2Heights = new HashMap<>();
+
+        treeHeight(root, 0, levelMap, heightMap, top2Heights);
+
+        // System.out.println(levelMap);
+        // System.out.println(heightMap);
+        // for(Map.Entry<Integer, int[]> m : top2Heights.entrySet()){
+        //     System.out.println(m.getKey() + "  " + Arrays.toString(m.getValue()));
+        // }
+
+        int n = queries.length;
+        int answers[] = new int[n];
+        for(int i = 0;i< n;i++){
+
+            // Finding the current level, height, and top2 heights of current level of given query.
+            int level = levelMap.get(queries[i]);
+            int height = heightMap.get(queries[i]);
+            int[] top2 = top2Heights.get(level);
+
+            int high = 0;
+            if(top2[0] == height)   high = top2[1];
+            else high = top2[0];
+            high = (high == -1)? 0 : high;
+
+            
+            answers[i] = high + level -1 ;
+        }
+
+        return answers;
+    }
+}
