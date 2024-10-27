@@ -1,0 +1,38 @@
+1277.  Count Square SubMatrices with all Ones.
+
+class Solution {
+    public int countSquares(int[][] matrix) {
+        
+        int n = matrix.length,
+            m = matrix[0].length,
+            min = Math.min(n, m),
+            sum = 0;
+
+        for(int i = 1;i <= min; i++){
+            sum += countSquares(matrix, i);
+        }
+        return sum;
+    }
+
+    public int countSquares(int[][] matrix, int side){
+        int n = matrix.length,
+            m = matrix[0].length;
+        
+        int count = 0;
+        for(int i = 0;i<n-side+1; i++){
+            for(int j = 0;j < m-side+1;j++){
+                if(isValid(matrix, i, j, side)) count++;
+            }
+        }
+        return count;
+    }
+
+    public boolean isValid(int[][] matrix, int row, int col, int side){
+        for(int i= row;i < row+side;i++){
+            for(int j = col; j< col + side;j++){
+                if(matrix[i][j] == 0)   return false;   
+            }
+        }
+        return true;
+    }
+}
