@@ -1,0 +1,40 @@
+3011.  Find if Array can be Sorted.
+
+class Solution {
+    public boolean canSortArray(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+
+        int prev = findSetBits(nums[0]);
+        list.add(new ArrayList<>());
+        for(int num : nums){
+            int curr = findSetBits(num);
+            if(curr != prev){
+                list.add(new ArrayList<>());
+            }
+            list.get(list.size()-1).add(num);
+            prev = curr;
+        }
+
+        for(List<Integer> subset : list){
+            Collections.sort(subset);
+        }
+        
+        prev = 0;
+        for(List<Integer> subset : list){
+            if(subset.get(0) < prev)    return false;
+            prev = subset.get(subset.size()-1);
+        }
+
+        //System.out.println(list);
+        return true;
+    }
+
+    private int findSetBits(int num){
+        int count = 0;
+        while(num != 0){
+            if(num%2 == 1)  count++;
+            num /= 2;
+        }
+        return count;
+    }
+}
