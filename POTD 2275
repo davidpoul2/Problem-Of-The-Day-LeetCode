@@ -1,0 +1,26 @@
+2275.  Largest Combination with Bitwise AND Greater than Zero.
+
+class Solution {
+    public int largestCombination(int[] candidates) {
+        
+        int maxval = 0;
+        for(int candidate : candidates)
+            maxval = Math.max(maxval, candidate);
+
+        int countBits = 0;
+        while(maxval != 0){
+            countBits++;
+            maxval /= 2;
+        }
+
+        int max = 0;
+        for(int i  = 0;i< countBits;i++){
+            int count = 0;
+            for(int j = 0 ;j < candidates.length;j++){
+                if(((candidates[j] >> i)&1) == 1) count++;
+            }
+            max = Math.max(max, count);
+        }
+        return max;
+    }
+}
