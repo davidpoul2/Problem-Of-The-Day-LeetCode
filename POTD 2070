@@ -1,0 +1,37 @@
+2070.  Most Beautiful Item for Each Query.
+
+class Solution {
+    public int[] maximumBeauty(int[][] items, int[] queries) {
+        
+        Arrays.sort(items, (a, b)-> a[0]-b[0]);
+
+        int prev = items[0][1];
+        for(int item[] : items){
+            if(prev > item[1]){
+                item[1] = prev;
+            }
+            else prev = item[1];
+        }
+
+        int mostBeauty[] = new int[queries.length];
+        for(int i  =0;i < queries.length;i++){
+            mostBeauty[i] = findMostBeauty(items, queries[i]);
+        }
+        return mostBeauty;
+    }
+
+    private int findMostBeauty(int[][] items, int query){
+        int low = 0;
+        int high = items.length-1;
+        while(low <= high){
+            int mid = low + ((high-low)/2);
+
+            if(items[mid][0] > query){
+                high = mid-1;
+            }
+            else low = mid+1;
+        }
+
+        return (high == -1)?0:items[high][1];
+    }
+}
