@@ -1,0 +1,50 @@
+2563.  Count the Number of Fair Pairs.
+
+class Solution {
+    public long countFairPairs(int[] nums, int lower, int upper) {
+        
+        long fairPairs = 0L;
+        Arrays.sort(nums);
+        List<Integer> pairs = new ArrayList<>();
+        pairs.add(nums[0]);
+
+        for(int i = 1;i<nums.length;i++){
+            int lowerBound = lower-nums[i];
+            int upperBound = upper-nums[i];
+
+            int low = lowerBound(pairs, lowerBound);
+            if(low != Integer.MAX_VALUE){
+                fairPairs += (int)(upperBound(pairs, upperBound) - low + 1);
+            }
+            pairs.add(nums[i]);
+        }
+
+        return fairPairs;
+    }
+
+    private int lowerBound(List<Integer> pairs, int tar){
+        int low = 0;
+        int high = pairs.size()-1;
+
+        while(low <= high){
+            int mid = low + ((high-low)/2);
+            if(pairs.get(mid) < tar)    low = mid+1;
+            else high = mid-1;
+        }
+
+        return low == pairs.size() ? Integer.MAX_VALUE:low;
+    }
+
+    private int upperBound(List<Integer> pairs, int tar){
+        int low = 0;
+        int high = pairs.size()-1;
+
+        while(low <= high){
+            int mid = low + ((high-low)/2);
+            if(pairs.get(mid) > tar)    high = mid-1;
+            else low = mid+1;
+        }
+
+        return high;
+    }
+}
