@@ -1,0 +1,49 @@
+2064.  Minimized Maximum of Products Distributed to Any Store.
+
+class Solution {
+
+    public int max(int[] quantities){
+        int max = 0;
+        for(int quantity : quantities){
+            max = Math.max(max, quantity);
+        }
+        return max;
+    }
+
+    public int minimizedMaximum(int n, int[] quantities) {
+        
+        int low = 0;
+        int high = max(quantities);
+
+        while(low <= high){
+            int mid = low + ((high-low)/2);
+
+            int stores = findStores(quantities, mid);
+            if(stores <= n){
+                high = mid-1;
+            }
+            else    low = mid+1;
+        }
+
+        return low;
+    }
+
+    public int findStores(int[] quantities, int store){
+        int stores = 0;
+
+        if(store == 0)  return Integer.MAX_VALUE;
+        
+        for(int i = 0;i < quantities.length;i++){
+            int quantity = quantities[i];
+
+            if(store != 0){
+                stores += quantity/store;
+                stores += (quantity%store == 0)?0:1;
+            }
+            
+        }
+        //System.out.println(stores);
+
+        return stores;
+    }
+}
