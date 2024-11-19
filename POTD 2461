@@ -1,0 +1,32 @@
+2461.  Maximum Sum of Distinct Subarrays With Length K
+
+class Solution {
+    public long maximumSubarraySum(int[] nums, int k) {
+        
+        int prev = 0,
+            n = nums.length;
+        
+        long sum = 0L,
+            max = 0L;
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int i = 0;i < n;i++){
+            sum += nums[i];
+            map.put(nums[i], map.getOrDefault(nums[i], 0)+1);
+
+            if(i - prev + 1 == k){
+                if(map.size() == k){
+                    max = Math.max(max, sum);
+                }
+                int count = map.get(nums[prev]);
+                if(count == 1)  map.remove(nums[prev]);
+                else map.put(nums[prev], count-1);
+                sum -= nums[prev];
+                prev++;
+            }
+        }
+
+        return max;
+    }
+}
