@@ -1,0 +1,28 @@
+2516.  Take K of Each Character from Left to Right.
+
+class Solution {
+    public int takeCharacters(String s, int k) {
+        
+        int count[] = new int[3];
+        for(int i = 0;i<s.length();i++){
+            count[s.charAt(i)-'a']++;
+        }
+
+        if(Arrays.stream(count).min().getAsInt() < k)    return -1;
+        
+        int res = Integer.MAX_VALUE;
+        for(int l = 0, r = 0; r < s.length();r++){
+
+            count[s.charAt(r) - 'a']--;
+
+            while(Arrays.stream(count).min().getAsInt() < k){
+                count[s.charAt(l)-'a']++;
+                l++;
+            }
+
+            res = Math.min(res, s.length() - (r - l + 1));
+        }
+
+        return res;
+    }
+}
