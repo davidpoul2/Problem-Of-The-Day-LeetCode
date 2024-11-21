@@ -1,0 +1,60 @@
+2257.  Count Unguarded Cells in the Grid.
+
+class Solution {
+    public int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
+        
+        char guarded[][] = new char[m][n];
+        for(int i = 0;i< m;i++)
+            Arrays.fill(guarded[i], '-');
+
+        for(int[] wall : walls) 
+            guarded[wall[0]][wall[1]] = 'W';
+
+        for(int[] guard : guards){
+            guarded[guard[0]][guard[1]] = 'G';
+        }
+
+        for(int[] guard : guards){
+            makeGuarded(guarded, guard);
+        }
+
+        int unGuarded = 0;
+        for(int i = 0;i < m;i++)
+            for(int j = 0;j<n;j++)  
+                if(guarded[i][j] == '-')
+                    unGuarded++;
+        
+        return unGuarded;
+    }
+
+    public void makeGuarded(char[][] guarded, int[] guard){
+
+        int row = guard[0]-1;
+        int col = guard[1];
+        while(row >= 0){
+            if(guarded[row][col] == 'W' || guarded[row][col] == 'G') break;
+            guarded[row][col] = 2;
+            row--;
+        }
+        row = guard[0]+1;
+        while(row < guarded.length){
+            if(guarded[row][col] == 'W' || guarded[row][col] == 'G') break;
+            guarded[row][col] = 2;
+            row++;
+        }
+        row = guard[0];
+        col = guard[1]-1;
+        while(col >= 0){
+            if(guarded[row][col] == 'W' || guarded[row][col] == 'G') break;
+            guarded[row][col] = 2;
+            col--;
+        }
+        col = guard[1]+1;
+        while(col < guarded[0].length){
+            if(guarded[row][col] == 'W' || guarded[row][col] == 'G') break;
+            guarded[row][col] = 2;
+            col++;
+        }
+
+    }
+}
