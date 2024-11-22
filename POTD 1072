@@ -1,0 +1,42 @@
+1072.  Flip Columns For Maximum Number of Equal Rows.
+
+class Solution {
+
+    public String actual(int[] row){
+        StringBuffer sb = new StringBuffer();
+        for(int cell : row)
+            sb.append(cell);
+        
+        return sb.toString();
+    }
+
+    public String reverse(int[] row){
+        StringBuffer sb = new StringBuffer();
+        for(int cell : row){
+            if(cell == 0)   sb.append(1);
+            else sb.append(0);
+        }
+        return sb.toString();
+    }
+
+    public int maxEqualRowsAfterFlips(int[][] matrix) {
+        
+        Map<String, Integer> map = new HashMap<>();
+
+        for(int row[] : matrix){
+            String actual = actual(row);
+            String reverse = reverse(row);
+
+            if(map.containsKey(reverse))
+                map.put(reverse, map.getOrDefault(reverse, 0)+1);
+            
+            map.put(actual, map.getOrDefault(actual, 0)+1);
+        }
+
+        int max = 0;
+        for(Map.Entry<String, Integer> m  : map.entrySet())
+            max = Math.max(max, m.getValue());
+
+        return max;
+    }
+}
