@@ -1,0 +1,44 @@
+2924.  Find Champion II
+
+class Solution {
+    public int findChampion(int n, int[][] edges) {
+        
+        ArrayList<Integer> adj[] = new ArrayList[n];
+        for(int i = 0;i<n;i++)
+            adj[i] = new ArrayList<>();
+
+        for(int edge[] : edges)
+            adj[edge[0]].add(edge[1]);
+
+        Set<Integer> champ = new HashSet<>();
+        Set<Integer> non_champ = new HashSet<>();
+
+        for(int i = 0;i < n;i++){
+            if(!non_champ.contains(i))
+                findChamp(i, champ, non_champ, adj);
+        }
+
+        return champ.size() == 1? champ.iterator().next(): -1;
+    }
+
+    public void findChamp(int team, Set<Integer> champ, Set<Integer> non_champ, ArrayList<Integer> adj[]){
+
+        Queue<Integer> queue = new LinkedList<>();
+        champ.add(team);
+        queue.add(team);
+
+        while(!queue.isEmpty()){
+            var curr = queue.poll();
+            
+            for(int i = 0;i< adj[curr].size();i++){
+                int adj_team = adj[curr].get(i);
+                if(champ.contains(adj_team))    champ.remove(adj_team);
+                else if(non_champ.contains(adj_team))   continue;
+                else{
+                    non_champ.add(adj_team);
+                    queue.add(adj_team);
+                }
+            }
+        }
+    }
+}
