@@ -1,0 +1,40 @@
+2290.  Minimum Obstacle Removal to Reach Corner
+
+record Pair(int obstacles, int r, int c){ }
+class Solution {
+    public int minimumObstacles(int[][] grid) {
+        
+        int n = grid.length;
+        int m = grid[0].length;
+
+        int[][] minDis = new int[n][m];
+        minDis[0][0] = 0;
+        for(int i = 0;i < n;i++)
+            Arrays.fill(minDis[i], Integer.MAX_VALUE);
+        
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.obstacles() - b.obstacles());
+        pq.add(new Pair(0, 0, 0));
+
+        while(!pq.isEmpty()){
+            var curr = pq.poll();
+
+            int obstacles = curr.obstacles(),
+                r = curr.r(),
+                c = curr.c();
+
+            if(r == n-1 && c == m-1)    return obstacles;
+
+            int neighs[][] = {{r-1, c}, {r, c+1}, {r+1, c}, {r, c-1}};
+            for(int[] neigh : neighs){
+                if(neigh[0] < 0 || neigh[1] < 0 || neigh[0] >= n || neigh[1] >= m)  
+                    continue;
+
+                if(obstacles+grid[neigh[0]][neigh[1]] < minDis[neigh[0]][neigh[1]]){
+                    minDis[neigh[0]][neigh[1]] = obstacles+grid[neigh[0]][neigh[1]];
+                    pq.add(new Pair(minDis[neigh[0]][neigh[1]], neigh[0], neigh[1]));
+                }
+            }
+        }
+        return minDis[n-1][m-1];
+    }
+}
