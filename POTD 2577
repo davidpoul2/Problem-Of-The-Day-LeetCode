@@ -1,0 +1,55 @@
+2577.  Minimum Time to Visit a Cell In a Grid.
+
+record Pair(int time, int r, int c){ }
+class Solution {
+    public int minimumTime(int[][] grid) {
+
+        if(grid[0][1] > 1 && grid[1][0] > 1)    return -1;
+        
+        int ROWS = grid.length,
+            COLS = grid[0].length;
+
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.time() - b.time());
+        int minTime[][] = new int[ROWS][COLS];
+        for(int i = 0;i < ROWS;i++)
+            Arrays.fill(minTime[i], Integer.MAX_VALUE);
+
+        pq.add(new Pair(0, 0, 0));
+        minTime[0][0] = 0;
+
+        while(!pq.isEmpty()){
+
+            var curr = pq.poll();
+
+            int time = curr.time(),
+                r = curr.r(),
+                c = curr.c();
+
+            if(r == ROWS-1 && c == COLS-1)  return time;
+
+            int neighs[][] = {{r-1, c}, {r, c+1}, {r+1, c}, {r, c-1}};
+            for(int[] neigh : neighs){
+                if(isValid(neigh, ROWS, COLS)){
+                    int adj_time = Math.max(time+1, 
+                                    ((Math.abs(grid[neigh[0]][neigh[1]] - time)%2 == 0) 
+                                                    ? grid[neigh[0]][neigh[1]]+1 
+                                                    : grid[neigh[0]][neigh[1]]));
+                    
+                    if(minTime[neigh[0]][neigh[1]] > adj_time){
+                        minTime[neigh[0]][neigh[1]] = adj_time;
+                        pq.add(new Pair(adj_time, neigh[0], neigh[1]));
+                    }
+                }
+                    
+            }
+
+        }
+        return -1;
+
+        
+    }
+
+    public boolean isValid(int[] neigh, int ROWS, int COLS){
+        return (neigh[0] >= 0 && neigh[1] >= 0 && neigh[0] < ROWS && neigh[1] < COLS);
+    }
+}
