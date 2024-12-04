@@ -1,0 +1,25 @@
+2825.  Make String a Subsequence Using Cyclic Increments.
+
+class Solution {
+    public boolean canMakeSubsequence(String str1, String str2) {
+        
+        if(str1.length() < str2.length())   return false;
+
+        int index = -1;
+        for(char ch : str2.toCharArray()){
+            char prev = (ch == 'a') ? 'z' : (char)(ch -1);
+            index++;
+
+            while(index < str1.length()){
+                if(str1.charAt(index) == prev || str1.charAt(index) == ch){
+                    break;
+                }
+                index++;
+            }
+
+            if(index >= str1.length())  return false;
+
+        }
+        return true;
+    }
+}
