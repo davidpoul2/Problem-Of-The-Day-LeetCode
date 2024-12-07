@@ -1,0 +1,44 @@
+1760.  Maximum Limit of Balls in a Bag.
+
+class Solution {
+    public int minimumSize(int[] nums, int maxOperations) {
+        
+        int low = 1;
+        int high = max(nums);
+        
+        while(low <= high){
+            int mid = low + ((high-low)/2);
+
+            int operations = findMinBalls(mid, nums);
+            if(operations <= maxOperations){
+                high = mid-1;
+            }  
+            else{
+                low = mid+1;
+            } 
+        }
+        return low;
+    }
+
+    public int max(int nums[]){
+        int max = 0;
+
+        for(int num : nums)
+            max = Math.max(max, num);
+        
+        return max;
+    }
+
+    public int findMinBalls(int eachBagBalls, int[] bags){
+        int operations = 0;
+        for(int balls : bags){
+            int operation = 0;
+            operation = balls/eachBagBalls;
+            if(balls%eachBagBalls != 0) operation++;
+            if(operation > 0)  operation--;
+            operations += operation;
+        }
+        return operations;
+
+    }
+}
