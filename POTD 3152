@@ -1,0 +1,44 @@
+3152.  Special Array II.
+
+class Solution {
+    public boolean[] isArraySpecial(int[] nums, int[][] queries) {
+        
+        int n = queries.length;
+        boolean[] special = new boolean[n];
+        List<Integer> not_special = new ArrayList<>();
+
+        for(int i = 0;i < nums.length-1;i++){
+            if(nums[i]%2 == nums[i+1]%2)
+                not_special.add(i);
+        }
+
+        int index = 0;
+        for(int[] query : queries){
+            
+            boolean isValid = isSpecial(query[0], query[1]-1, not_special);
+            special[index++] = !isValid;
+        }
+        return special;
+    }
+
+    // Using Binary Search to find the non_special character in the specific Query.
+    public boolean isSpecial(int start, int end, List<Integer> not_special){
+
+        int low = 0;
+        int high = not_special.size()-1;
+
+        while(low <= high){
+            int mid = low + ((high-low)/2);
+
+            if(not_special.get(mid) < start)
+                low = mid+1;
+            
+            else if(not_special.get(mid) > end)
+                high = mid-1;
+            else 
+                return true;
+
+        }
+        return false;
+    }
+}
