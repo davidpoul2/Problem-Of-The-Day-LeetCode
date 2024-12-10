@@ -1,0 +1,30 @@
+2981.  Find Longest Special Substring That Occurs Thrice I.
+
+class Solution {
+    public int maximumLength(String s) {
+        
+        int maxLen = -1;
+        for(int i = 0;i < s.length();i++){
+            for(int j = i;j< s.length();j++){
+                if(s.charAt(i) == s.charAt(j)){
+                    if(isSpecial(s, s.substring(i, j+1))){
+                        maxLen = Math.max(maxLen, (j-i)+1);
+                    }
+                }
+                else
+                    break;
+            }
+        }
+        return maxLen;
+    }
+
+    public boolean isSpecial(String s, String isSpecial){
+        int count = 0;
+        
+        for(int i = 0;i <= s.length()-isSpecial.length();i++){
+            if(s.substring(i, i + isSpecial.length()).equals(isSpecial))
+                count++;
+        }
+        return (count > 2);
+    }
+}
