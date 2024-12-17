@@ -1,0 +1,39 @@
+2182.  Construct String With Repeat Limit.
+
+class Solution {
+    public String repeatLimitedString(String s, int repeatLimit) {
+        
+        Map<Character, Integer> map = new HashMap<>();
+        for(char ch : s.toCharArray())
+            map.put(ch, map.getOrDefault(ch, 0)+1);
+        
+        // Adding Map entry to priorityQueue(max_heap).
+        // Sorting the Key in desc order by using Comparator obj(lambda Expression).
+        PriorityQueue<Map.Entry<Character, Integer>> pq = new PriorityQueue<>((e1, e2) -> e2.getKey() - e1.getKey());
+        pq.addAll(map.entrySet());
+
+        StringBuilder str = new StringBuilder();
+
+        while(!pq.isEmpty()){
+
+            var curr = pq.poll();
+            char curr_ch = curr.getKey();
+            int curr_count = curr.getValue();
+
+            int min_count = Math.min(curr_count, repeatLimit);
+            for(int i = 0;i < min_count;i++)
+                str.append(curr_ch + "");
+            
+            if(curr_count - min_count > 0 && !pq.isEmpty()){
+                var nxt_curr = pq.poll();
+                char nxt_curr_ch = nxt_curr.getKey();
+                int nxt_curr_count = nxt_curr.getValue();
+
+                str.append(nxt_curr_ch);
+                pq.add(Map.entry(curr_ch, curr_count - min_count));
+                if(nxt_curr_count > 1)  pq.add(Map.entry(nxt_curr_ch, nxt_curr_count-1));
+            }
+        }
+        return str.toString();
+    }
+}
