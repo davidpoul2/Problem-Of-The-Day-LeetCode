@@ -1,0 +1,20 @@
+2466.  Count Ways to Build Good Strings.
+
+class Solution {
+
+    int mod = (int)1e9+7;
+    public int countGoodStrings(int low, int high, int zero, int one) {
+        return countGoodStrings(0, low, high, zero, one, new HashMap<>());
+    }
+
+    public int countGoodStrings(int count, int low, int high, int zero, int one, Map<Integer, Integer> dp){
+        if(count > high)
+            return 0;
+        
+        if(dp.containsKey(count))   return dp.get(count);
+        int cnt = (count >= low)?1: 0;
+        int val = (countGoodStrings((count+zero)%mod, low, high, zero, one, dp) + countGoodStrings((count+one)%mod, low, high, zero, one, dp) + cnt)%mod;
+        dp.put(count, val);
+        return val;
+    }
+}
