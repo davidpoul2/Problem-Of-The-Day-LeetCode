@@ -1,0 +1,28 @@
+1930.  Unique Lenght-3 Palindromic Subsequences.
+
+class Solution {
+    public int countPalindromicSubsequence(String s) {
+        
+        int palindromes = 0;
+        for(int asci = 97 ; asci < 123; asci++){
+            char ch = (char)asci;
+            
+            int start = 0;
+            int end = s.length()-1;
+
+            while(start < end){
+                if(s.charAt(start) != ch)   start++;
+                if(s.charAt(end) != ch)     end--;
+                if(s.charAt(start) == ch && s.charAt(end) == ch)    break;
+            }
+
+            Set<Character> set = new HashSet<>();
+            for(int i = start+1;i < end;i++)
+                set.add(s.charAt(i));
+            
+            palindromes += set.size();
+        }
+
+        return palindromes;
+    }
+}
