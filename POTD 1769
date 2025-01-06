@@ -1,0 +1,24 @@
+1769.  Minimum Number of Operations to Move All Balls to Each Box. 
+
+class Solution {
+    public int[] minOperations(String boxes) {
+        
+        Set<Integer> set = new HashSet<>();
+        int n = boxes.length();
+
+        for(int i = 0;i < n;i++){
+            if(boxes.charAt(i) == '1')
+                set.add(i);
+        }
+
+        int operations[] = new int[n];
+        for(int i = 0;i < n;i++){
+            
+            for(int index : set){
+                operations[i] += Math.abs(index-i);
+            }
+        }
+            
+        return operations;
+    }
+}
