@@ -1,0 +1,50 @@
+1765.  Map of Highest Peak.
+
+class Solution {
+    public int[][] highestPeak(int[][] isWater) {
+        
+        int m = isWater.length,
+            n = isWater[0].length,
+            heights[][] = new int[m][n];
+
+        boolean vis[][] = new boolean[m][n];
+
+        Queue<int[]> queue = new LinkedList<>();
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(isWater[i][j] == 1){
+                    queue.add(new int[]{i, j});
+                    vis[i][j] = true;
+                }
+            }
+        }
+
+        int height = 0;
+        while(!queue.isEmpty()){
+            int size = queue.size();
+
+            int adjRow[] = {-1, 0, 1, 0};
+            int adjCol[] = {0, 1, 0, -1};
+
+            for(int i = 0;i < size;i++){
+                var curr = queue.poll();
+
+                heights[curr[0]][curr[1]] = height;
+
+                for(int j = 0;j < 4;j++){
+                    int row = curr[0] + adjRow[j];
+                    int col = curr[1] + adjCol[j];
+
+                    if(row >= 0 && row <m && col >= 0 && col < n && !vis[row][col]){
+                        queue.add(new int[]{row, col});
+                        vis[row][col] = true;
+                    }
+                          
+                }
+            }
+            height++;
+        }
+
+        return heights;
+    }
+}
