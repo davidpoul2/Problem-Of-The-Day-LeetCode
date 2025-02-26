@@ -1,0 +1,34 @@
+1749.  Maximum Absolute Sum of Any Subarray.
+
+// Kadane's Algorithm.
+
+class Solution {
+    public int maxAbsoluteSum(int[] nums) {
+        return Math.max(maxSum(nums), minSum(nums));
+    }
+
+    public int maxSum(int[] nums){
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+
+        for(int num : nums){
+            sum += num;
+            sum = Math.max(sum, num);
+            max = Math.max(sum, max);
+        }
+        return max;
+    }
+
+    public int minSum(int[] nums){
+        int min = Integer.MAX_VALUE;
+        int sum = 0;
+
+        for(int num : nums){
+            sum += num;
+            sum = Math.min(sum, num);
+            min = Math.min(min, sum);
+        }
+
+        return Math.abs(min);
+    }
+}
