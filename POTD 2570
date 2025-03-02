@@ -1,0 +1,72 @@
+2570.  Merge Two 2D Arrays by Summing Values.
+
+class Solution {
+    public int[][] mergeArrays(int[][] nums1, int[][] nums2) {
+        
+        int size = 0;
+        int first = 0,
+            second = 0;
+
+        // Finding the number of unique id's using size variable.
+        while(first < nums1.length && second < nums2.length){
+            if(nums1[first][0] == nums2[second][0]){
+                first++;
+                second++;
+            }
+            else if(nums1[first][0] < nums2[second][0]){
+                first++;
+            }
+            else if(nums1[first][0] > nums2[second][0]){
+                second++;
+            }
+            size++;
+        }
+
+        while(first < nums1.length){
+            first++;
+            size++;
+        }
+
+        while(second < nums2.length){
+            second++;
+            size++;
+        }
+
+        int[][] result = new int[size][2];
+
+        first = 0;
+        second = 0;
+        int index = 0;
+
+        while(first < nums1.length && second < nums2.length){
+            if(nums1[first][0] == nums2[second][0]){
+                result[index] = new int[]{nums1[first][0], nums1[first][1] + nums2[second][1]};
+                first++;
+                second++;
+            }
+            else if(nums1[first][0] < nums2[second][0]){
+                result[index] = new int[]{nums1[first][0], nums1[first][1]};
+                first++;
+            }
+            else if(nums1[first][0] > nums2[second][0]){
+                result[index] = new int[]{nums2[second][0], nums2[second][1]};
+                second++;
+            }
+            index++;
+        }
+
+        while(first < nums1.length){
+            result[index] = new int[]{nums1[first][0], nums1[first][1]};
+            index++;
+            first++;
+        }
+
+        while(second < nums2.length){
+            result[index] = new int[]{nums2[second][0], nums2[second][1]};
+            index++;
+            second++;
+        }
+
+        return result;
+    }
+}
