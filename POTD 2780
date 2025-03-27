@@ -1,0 +1,44 @@
+2780.  Minimum Index of a Valid Split.
+
+class Solution {
+    public int minimumIndex(List<Integer> nums) {
+        
+        int maxRep = -1;
+        int maxRepCount = 0;
+        Map<Integer, Integer> repCount = new HashMap<>();
+
+        for(int num : nums){
+            if(repCount.containsKey(num))
+                repCount.put(num, repCount.getOrDefault(num, 0) + 1);
+            
+            else
+                repCount.put(num, 1);
+        }
+
+        for(Map.Entry<Integer, Integer> m : repCount.entrySet()){
+            if(maxRepCount < m.getValue()){
+                maxRep = m.getKey();
+                maxRepCount = m.getValue();
+            }
+        }
+
+        int indexCount = 0;
+        Map<Integer, Integer> index = new HashMap<>();
+        for(int i = 0 ;i < nums.size();i++){
+            if(nums.get(i) == maxRep){
+                indexCount++;
+            }
+            index.put(i, indexCount);
+        }
+
+        int minIndex = -1;
+        for(int i = 0;i < nums.size();i++){
+            int firstCount = index.get(i);
+            int secondCount = maxRepCount-firstCount;
+
+            if((i+1)/2 < firstCount && (nums.size()-(i+1))/2 < secondCount)
+                return i;
+        }
+        return -1;
+    }
+}
