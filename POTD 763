@@ -1,0 +1,33 @@
+763.  Partition Labels.
+
+class Solution {
+    public List<Integer> partitionLabels(String s) {
+        
+        Map<Character, Integer> map = new HashMap<>();
+        int n= s.length();
+
+        for(int i = 0;i < n;i++){
+            map.put(s.charAt(i), i);
+        }
+
+        List<Integer> labels = new ArrayList<>();
+
+        int index = 0,
+            prev = 0;
+        
+        while(index < n){
+            int tar = index+1;
+            while(index < tar){
+                tar = Math.max(tar, map.get(s.charAt(index))+ 1);
+                index++;
+            }
+
+            if(index == tar){
+                labels.add(tar - prev);
+                prev = index;
+            }
+        }
+
+        return labels;
+    }
+}
