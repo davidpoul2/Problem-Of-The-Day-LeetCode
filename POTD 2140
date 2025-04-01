@@ -1,0 +1,28 @@
+2140.  Solving Questions with Brainpower.
+
+class Solution {
+    public long mostPoints(int[][] questions) {
+        
+        return mostPoints(0, questions, new long[questions.length]);
+
+    }
+
+    private long mostPoints(int index, int questions[][], long points[]){
+
+        if(index >= questions.length)
+            return 0;
+
+        if(points[index] != 0)
+            return points[index];
+        
+        int point = questions[index][0];
+        int brainpower = questions[index][1];
+
+        points[index] = Math.max(
+                                    mostPoints(index + 1, questions, points), 
+                                    (point + mostPoints(index + 1 + brainpower, questions, points))
+                                );
+        
+        return points[index];
+    }
+}
